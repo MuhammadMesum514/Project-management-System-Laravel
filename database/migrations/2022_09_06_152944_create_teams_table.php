@@ -17,7 +17,7 @@ class CreateTeamsTable extends Migration
             $table->id('team_id');
             $table->string('teamName');
             $table->unsignedBigInteger('teamLead');            
-            $table->foreign('teamLead')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('teamLead')->references('manager_id')->on('managers')->onDelete('cascade');
             $table->timestamps();
         });
     }

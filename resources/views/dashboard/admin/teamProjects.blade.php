@@ -71,13 +71,6 @@
                         <li class="breadcrumb-item active">Projects</li>
                     </ul>
                 </div>
-                {{-- <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn add-btn" data-toggle="modal" data-target="#create_project"><i class="fa fa-plus"></i> Create Project</a>
-                    <div class="view-icons">
-                        <a href="projects.html" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
-                        <a href="project-list.html" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
-                    </div>
-                </div> --}}
             </div>
         </div>
         <!-- /Page Header -->
@@ -200,8 +193,6 @@
     </div>
 </div>
 <!-- /Page Content -->
-
-
 </div>
 <!-- /Page Wrapper -->
 @endsection

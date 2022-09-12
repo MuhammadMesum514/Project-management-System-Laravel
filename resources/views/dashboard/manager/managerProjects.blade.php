@@ -38,10 +38,22 @@
         </ul>
     </div>
     @endif
-       
-       <!-- Page Content -->
-       <div class="content container-fluid">
-				
+
+
+    <!-- Page Content -->
+    <div class="content container-fluid">
+        @php
+        function TrimDescription($text){
+        $max_length = 100;
+
+        if (strlen($text) > $max_length)
+        {
+        $offset = ($max_length - 3) - strlen($text);
+        $text = substr($text, 0, strrpos($text, ' ', $offset)) . '...';
+        }
+        return $text;
+        }
+        @endphp
         <!-- Page Header -->
         <div class="page-header">
             <div class="row align-items-center">
@@ -52,14 +64,21 @@
                         <li class="breadcrumb-item active">Projects</li>
                     </ul>
                 </div>
-                
+                <div class="col-auto float-right ml-auto">
+                    <a href="#" class="btn add-btn" data-toggle="modal" data-target="#create_project"><i class="fa fa-plus"></i> Create Project</a>
+                    <div class="view-icons">
+                        <a href="#" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
+                        <a href="#" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- /Page Header -->
-        
-        
-        
+
+
+
         <div class="row">
+            @foreach ($projects as $project)
             <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
                 <div class="card">
                     <div class="card-body">
@@ -70,141 +89,93 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                             </div>
                         </div>
-                        <h4 class="project-title"><a href="project-view.html">Hospital Administration</a></h4>
+                        <h4 class="project-title"><a href="#">{{$project->ProjectName}}</a></h4>
                         <small class="block text-ellipsis m-b-15">
                             <span class="text-xs">12</span> <span class="text-muted">open tasks, </span>
                             <span class="text-xs">4</span> <span class="text-muted">tasks completed</span>
                         </small>
-                        <p class="text-muted">Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. When an unknown printer took a galley of type and
-                            scrambled it...
+                        <p class="project_description">{{TrimDescription($project->ProjectDescription)}}
                         </p>
                         <div class="pro-deadline m-b-15">
                             <div class="sub-title">
                                 Deadline:
                             </div>
                             <div class="text-muted">
-                                17 Apr 2019
+                                {{$project->End}}
                             </div>
                         </div>
-                        <div class="project-members m-b-15">
-                            <div>Project Leader :</div>
-                            <ul class="team-members">
-                                <li>
-                                    <a href="#" data-toggle="tooltip" title="Jeffery Lalor"><img alt="" src="{{asset('/assets/img/profiles/avatar-16.jpg')}}"></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="project-members m-b-15">
-                            <div>Team :</div>
-                            <ul class="team-members">
-                                <li>
-                                    <a href="#" data-toggle="tooltip" title="John Doe"><img alt="" src="assets/img/profiles/avatar-02.jpg"></a>
-                                </li>
-                                <li>
-                                    <a href="#" data-toggle="tooltip" title="Richard Miles"><img alt="" src="assets/img/profiles/avatar-09.jpg"></a></a>
-                                </li>
-                                <li>
-                                    <a href="#" data-toggle="tooltip" title="John Smith"><img alt="" src="assets/img/profiles/avatar-10.jpg"></a>
-                                </li>
-                                <li>
-                                    <a href="#" data-toggle="tooltip" title="Mike Litorus"><img alt="" src="assets/img/profiles/avatar-05.jpg"></a>
-                                </li>
-                                <li class="dropdown avatar-dropdown">
-                                    <a href="#" class="all-users dropdown-toggle" data-toggle="dropdown" aria-expanded="false">+15</a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <div class="avatar-group">
-                                            <a class="avatar avatar-xs" href="#">
-                                                <img alt="" src="assets/img/profiles/avatar-02.jpg">
-                                            </a>
-                                            <a class="avatar avatar-xs" href="#">
-                                                <img alt="" src="assets/img/profiles/avatar-09.jpg">
-                                            </a>
-                                            <a class="avatar avatar-xs" href="#">
-                                                <img alt="" src="assets/img/profiles/avatar-10.jpg">
-                                            </a>
-                                            <a class="avatar avatar-xs" href="#">
-                                                <img alt="" src="assets/img/profiles/avatar-05.jpg">
-                                            </a>
-                                            <a class="avatar avatar-xs" href="#">
-                                                <img alt="" src="assets/img/profiles/avatar-11.jpg">
-                                            </a>
-                                            <a class="avatar avatar-xs" href="#">
-                                                <img alt="" src="assets/img/profiles/avatar-12.jpg">
-                                            </a>
-                                            <a class="avatar avatar-xs" href="#">
-                                                <img alt="" src="assets/img/profiles/avatar-13.jpg">
-                                            </a>
-                                            <a class="avatar avatar-xs" href="#">
-                                                <img alt="" src="assets/img/profiles/avatar-01.jpg">
-                                            </a>
-                                            <a class="avatar avatar-xs" href="#">
-                                                <img alt="" src="assets/img/profiles/avatar-16.jpg">
-                                            </a>
-                                        </div>
-                                        <div class="avatar-pagination">
-                                            <ul class="pagination">
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Previous">
-                                                        <span aria-hidden="true">«</span>
-                                                        <span class="sr-only">Previous</span>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Next">
-                                                        <span aria-hidden="true">»</span>
-                                                    <span class="sr-only">Next</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <p class="m-b-5">Progress <span class="text-success float-right">40%</span></p>
-                        <progress id="file" class="progress progress-xs mb-0 w-100" value="40" max="100"> 32% </progress>
-                        
-                    </div>
+                       
+                    <p class="m-b-5">Progress <span class="text-success float-right">{{$project->progress}}%</span></p>
+                    <progress id="file" class="progress progress-xs mb-0 w-100" value="{{$project->progress}}" max="100"> {{$project->progress}}% </progress>
+
                 </div>
             </div>
         </div>
-    </div>
-    <!-- /Page Content -->
-		  
+        @endforeach
 
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Create Project Modal -->
+<div id="create_project" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{route('manager.addproject')}}">
+                    @csrf
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <input class="form-control" name="project_Name" type="text">
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" name="project_StartDate" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <div class="cal-icon">
+                                    <input class="form-control datetimepicker" type="text" name="project_EndDate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="4" class="form-control summernote" name="project_description" placeholder="DescriptionEnter Project Description here"></textarea>
+                    </div>
+                    
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Create Project Modal -->
 </div>
 <!-- /Page Wrapper -->
 @endsection
 @section('importScripts')
 @endsection
 @section('script')
-{{-- AJAX REQUEST FOR SHIFT SELCTION --}}
-{{-- <script>
-    $(document).ready(function() {
-
-        $('#addTeam').on('click', function() {
-            // let shift = $(this).val();
-            $('#teamLead').empty();
-            $('#teamLead').append(`<option value="0" disabled selected>Processing...</option>`);
-            $.ajax({
-                type: 'GET'
-                , url: "ajaxTeamLead"
-                , success: function(response) {
-					// console.log(response);
-                    var response = JSON.parse(response);
-                    // console.log(response);
-                    $('#teamLead').empty();
-                    $('#teamLead').append(`<option value="0" disabled selected>Select Select Manager*</option>`);
-                    response.forEach(element => {
-                        $('#teamLead').append(`<option value="${element['manager_id']}">${element['name']}</option>`);
-                    });
-                }
-            });
-        });
-    });
-
-</script> --}}
 @endsection

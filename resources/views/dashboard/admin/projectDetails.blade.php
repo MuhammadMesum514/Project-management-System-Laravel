@@ -54,7 +54,7 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Hospital Admin</h3>
+                    <h3 class="page-title">{{$projects[0]->ProjectName}}</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                         <li class="breadcrumb-item active">Project</li>
@@ -69,115 +69,19 @@
         <!-- /Page Header -->
         
         <div class="row">
+            @foreach ($projects as $project)
+                
             <div class="col-lg-8 col-xl-9">
                 <div class="card">
                     <div class="card-body">
                         <div class="project-title">
-                            <h5 class="card-title">Hospital Administration</h5>
+                            <h5 class="card-title">{{$project->ProjectName}}</h5>
                             <small class="block text-ellipsis m-b-15"><span class="text-xs">2</span> <span class="text-muted">open tasks, </span><span class="text-xs">5</span> <span class="text-muted">tasks completed</span></small>
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel elit neque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum sollicitudin libero vitae est consectetur, a molestie tortor consectetur. Aenean tincidunt interdum ipsum, id pellentesque diam suscipit ut. Vivamus massa mi, fermentum eget neque eget, imperdiet tristique lectus. Proin at purus ut sem pellentesque tempor sit amet ut lectus. Sed orci augue, placerat et pretium ac, hendrerit in felis. Integer scelerisque libero non metus commodo, et hendrerit diam aliquet. Proin tincidunt porttitor ligula, a tincidunt orci pellentesque nec. Ut ultricies maximus nulla id consequat. Fusce eu consequat mi, eu euismod ligula. Aliquam porttitor neque id massa porttitor, a pretium velit vehicula. Morbi volutpat tincidunt urna, vel ullamcorper ligula fermentum at. </p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel elit neque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum sollicitudin libero vitae est consectetur, a molestie tortor consectetur. Aenean tincidunt interdum ipsum, id pellentesque diam suscipit ut. Vivamus massa mi, fermentum eget neque eget, imperdiet tristique lectus. Proin at purus ut sem pellentesque tempor sit amet ut lectus. Sed orci augue, placerat et pretium ac, hendrerit in felis. Integer scelerisque libero non metus commodo, et hendrerit diam aliquet. Proin tincidunt porttitor ligula, a tincidunt orci pellentesque nec. Ut ultricies maximus nulla id consequat. Fusce eu consequat mi, eu euismod ligula. Aliquam porttitor neque id massa porttitor, a pretium velit vehicula. Morbi volutpat tincidunt urna, vel ullamcorper ligula fermentum at. </p>
+                        <p>{{$project->ProjectDescription}}</p>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title m-b-20">Uploaded image files</h5>
-                        <div class="row">
-                            <div class="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                                <div class="uploaded-box">
-                                    <div class="uploaded-img">
-                                        <img src="assets/img/placeholder.jpg" class="img-fluid" alt="">
-                                    </div>
-                                    <div class="uploaded-img-name">
-                                         demo.png
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                                <div class="uploaded-box">
-                                    <div class="uploaded-img">
-                                        <img src="assets/img/placeholder.jpg" class="img-fluid" alt="">
-                                    </div>
-                                    <div class="uploaded-img-name">
-                                         demo.png
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                                <div class="uploaded-box">
-                                    <div class="uploaded-img">
-                                        <img src="assets/img/placeholder.jpg" class="img-fluid" alt="">
-                                    </div>
-                                    <div class="uploaded-img-name">
-                                         demo.png
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-sm-4 col-lg-4 col-xl-3">
-                                <div class="uploaded-box">
-                                    <div class="uploaded-img">
-                                        <img src="assets/img/placeholder.jpg" class="img-fluid" alt="">
-                                    </div>
-                                    <div class="uploaded-img-name">
-                                         demo.png
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title m-b-20">Uploaded files</h5>
-                        <ul class="files-list">
-                            <li>
-                                <div class="files-cont">
-                                    <div class="file-type">
-                                        <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
-                                    </div>
-                                    <div class="files-info">
-                                        <span class="file-name text-ellipsis"><a href="#">AHA Selfcare Mobile Application Test-Cases.xls</a></span>
-                                        <span class="file-author"><a href="#">John Doe</a></span> <span class="file-date">May 31st at 6:53 PM</span>
-                                        <div class="file-size">Size: 14.8Mb</div>
-                                    </div>
-                                    <ul class="files-action">
-                                        <li class="dropdown dropdown-action">
-                                            <a href="" class="dropdown-toggle btn btn-link" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="javascript:void(0)">Download</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#share_files">Share</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Delete</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="files-cont">
-                                    <div class="file-type">
-                                        <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
-                                    </div>
-                                    <div class="files-info">
-                                        <span class="file-name text-ellipsis"><a href="#">AHA Selfcare Mobile Application Test-Cases.xls</a></span>
-                                        <span class="file-author"><a href="#">Richard Miles</a></span> <span class="file-date">May 31st at 6:53 PM</span>
-                                        <div class="file-size">Size: 14.8Mb</div>
-                                    </div>
-                                    <ul class="files-action">
-                                        <li class="dropdown dropdown-action">
-                                            <a href="" class="dropdown-toggle btn btn-link" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="javascript:void(0)">Download</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#share_files">Share</a>
-                                                <a class="dropdown-item" href="javascript:void(0)">Delete</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                
                 <div class="project-task">
                     <ul class="nav nav-tabs nav-tabs-top nav-justified mb-0">
                         <li class="nav-item"><a class="nav-link active" href="#all_tasks" data-toggle="tab" aria-expanded="true">All Tasks</a></li>
@@ -323,82 +227,40 @@
                         <table class="table table-striped table-border">
                             <tbody>
                                 <tr>
-                                    <td>Cost:</td>
-                                    <td class="text-right">$1200</td>
-                                </tr>
-                                <tr>
-                                    <td>Total Hours:</td>
-                                    <td class="text-right">100 Hours</td>
-                                </tr>
-                                <tr>
                                     <td>Created:</td>
-                                    <td class="text-right">25 Feb, 2019</td>
+                                    <td class="text-right">{{\Carbon\Carbon::createFromFormat('Y-m-d', $project->start)->format('d M Y')}}</td>
                                 </tr>
                                 <tr>
                                     <td>Deadline:</td>
-                                    <td class="text-right">12 Jun, 2019</td>
+                                    <td class="text-right">{{\Carbon\Carbon::createFromFormat('Y-m-d', $project->End)->format('d M Y')}}</td>
                                 </tr>
-                                <tr>
-                                    <td>Priority:</td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="badge badge-danger dropdown-toggle" data-toggle="dropdown">Highest </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-danger"></i> Highest priority</a>
-                                                <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-info"></i> High priority</a>
-                                                <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-primary"></i> Normal priority</a>
-                                                <a class="dropdown-item" href="#"><i class="fa fa-dot-circle-o text-success"></i> Low priority</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Created by:</td>
-                                    <td class="text-right"><a href="profile.html">Barry Cuda</a></td>
-                                </tr>
+                                
                                 <tr>
                                     <td>Status:</td>
-                                    <td class="text-right">Working</td>
+                                    <td class="text-right">{{$project->status}}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p class="m-b-5">Progress <span class="text-success float-right">40%</span></p>
-                        <div class="progress progress-xs mb-0">
-                            <div class="progress-bar bg-success" role="progressbar" data-toggle="tooltip" title="40%" style="width: 40%"></div>
-                        </div>
+                        <p class="m-b-5">Progress <span class="text-success float-right">{{$project->progress}}%</span></p>
+                    <progress id="file" class="progress progress-xs mb-0 w-100" value="{{$project->progress}}" max="100"> {{$project->progress}}% </progress>
                     </div>
                 </div>
                 <div class="card project-user">
                     <div class="card-body">
-                        <h6 class="card-title m-b-20">Assigned Leader <button type="button" class="float-right btn btn-primary btn-sm" data-toggle="modal" data-target="#assign_leader"><i class="fa fa-plus"></i> Add</button></h6>
+                        <h6 class="card-title m-b-20">Team Leader</h6>
                         <ul class="list-box">
                             <li>
-                                <a href="profile.html">
                                     <div class="list-item">
                                         <div class="list-left">
                                             <span class="avatar"><img alt="" src="assets/img/profiles/avatar-11.jpg"></span>
                                         </div>
                                         <div class="list-body">
-                                            <span class="message-author">Wilmer Deluna</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Team Leader</span>
+                                            <span class="message-author">{{$managerName[0]->managername}}</span>
                                         </div>
                                     </div>
-                                </a>
                             </li>
                             <li>
-                                <a href="profile.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar"><img alt="" src="assets/img/profiles/avatar-01.jpg"></span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author">Lesley Grauer</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Team Leader</span>
-                                        </div>
-                                    </div>
-                                </a>
+                                
                             </li>
                         </ul>
                     </div>
@@ -406,42 +268,28 @@
                 <div class="card project-user">
                     <div class="card-body">
                         <h6 class="card-title m-b-20">
-                            Assigned users 
-                            <button type="button" class="float-right btn btn-primary btn-sm" data-toggle="modal" data-target="#assign_user"><i class="fa fa-plus"></i> Add</button>
+                            Team Members 
                         </h6>
                         <ul class="list-box">
+                            @foreach ($TeamMembers as $teamMember)
+                                
                             <li>
-                                <a href="profile.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar"><img alt="" src="assets/img/profiles/avatar-02.jpg"></span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author">John Doe</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Web Designer</span>
-                                        </div>
+                                <div class="list-item">
+                                    <div class="list-left">
+                                        <span class="avatar"><img alt="" src="assets/img/profiles/avatar-02.jpg"></span>
                                     </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="profile.html">
-                                    <div class="list-item">
-                                        <div class="list-left">
-                                            <span class="avatar"><img alt="" src="assets/img/profiles/avatar-09.jpg"></span>
-                                        </div>
-                                        <div class="list-body">
-                                            <span class="message-author">Richard Miles</span>
-                                            <div class="clearfix"></div>
-                                            <span class="message-content">Web Developer</span>
-                                        </div>
+                                    <div class="list-body">
+                                        <span class="message-author">{{$teamMember->username}}</span>
+                                        <div class="clearfix"></div>
                                     </div>
-                                </a>
+                                </div>
                             </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
             </div>
+            @endforeach
         </div>
     </div>
     <!-- /Page Content -->

@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\AdminTeamsController;
 use App\Http\Controllers\Admin\AdminProjectController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\Manager\ManagerController;
+use App\Http\Controllers\Manager\ManagerDashboardController;
+use App\Http\Controllers\Manager\ManagerProjectController;
 use App\Http\Controllers\User\userCalendar;
 use App\Http\Controllers\User\followUpForms;
 /*
@@ -95,7 +97,12 @@ Route::prefix('manager')->name('manager.')->group(function(){
        });
 
        Route::middleware(['auth:manager','PreventBackHistory'])->group(function(){
-            Route::view('/home','dashboard.manager.home')->name('home');
+            Route::get('/home',[ManagerDashboardController::class,'index'])->name('home');
+
+            // manager Projects
+            Route::get('/managerproject',[ManagerProjectController::class,'index'])->name('managerproject');
+            Route::post('/addproject',[ManagerProjectController::class,'createProject'])->name('addproject');
+            
             Route::post('logout',[ManagerController::class,'logout'])->name('logout');
        });
 
