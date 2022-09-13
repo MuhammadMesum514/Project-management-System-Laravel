@@ -55,7 +55,7 @@
 							<div class="col-auto float-right ml-auto">
 								<a href="#" class="btn add-btn" data-toggle="modal" id="addTeam" data-target="#add_client"><i class="fa fa-plus"></i> Add Team</a>
 								<div class="view-icons">
-									<a href="clients.html" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
+									<a href="#" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
 								</div>
 							</div>
 						</div>

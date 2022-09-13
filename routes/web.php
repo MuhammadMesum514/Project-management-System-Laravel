@@ -10,6 +10,7 @@ use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\Manager\ManagerController;
 use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\Manager\ManagerProjectController;
+use App\Http\Controllers\Manager\ManagerTaskController;
 use App\Http\Controllers\User\userCalendar;
 use App\Http\Controllers\User\followUpForms;
 /*
@@ -101,7 +102,12 @@ Route::prefix('manager')->name('manager.')->group(function(){
 
             // manager Projects
             Route::get('/managerproject',[ManagerProjectController::class,'index'])->name('managerproject');
+            Route::get('/editmanagerproject/{id}',[ManagerProjectController::class,'edit'])->name('editmanagerproject');
             Route::post('/addproject',[ManagerProjectController::class,'createProject'])->name('addproject');
+            Route::post('/deleteproject',[ManagerProjectController::class,'deleteProject'])->name('deleteproject');
+            
+            // manager Tasks 
+            Route::get('/managertasks/{projectId}',[ManagerTaskController::class,'index'])->name('managertasks');
             
             Route::post('logout',[ManagerController::class,'logout'])->name('logout');
        });

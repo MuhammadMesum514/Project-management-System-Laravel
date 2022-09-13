@@ -60,10 +60,10 @@
                         <li class="breadcrumb-item active">Project</li>
                     </ul>
                 </div>
-                <div class="col-auto float-right ml-auto">
+                {{-- <div class="col-auto float-right ml-auto">
                     <a href="#" class="btn add-btn" data-toggle="modal" data-target="#edit_project"><i class="fa fa-plus"></i> Edit Project</a>
                     <a href="task-board.html" class="btn btn-white float-right m-r-10" data-toggle="tooltip" title="Task Board"><i class="fa fa-bars"></i></a>
-                </div>
+                </div> --}}
             </div>
         </div>
         <!-- /Page Header -->
