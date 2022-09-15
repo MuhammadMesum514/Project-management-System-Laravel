@@ -57,8 +57,50 @@ class ManagerProjectController extends Controller
           }
 }
 
-    // * For Deleting a Project
+    //* for updating a project 
+    public function updateProject(Request $request){
+            // dd($request->all());
 
+            try{
+                if($request->get('completed')){
+                    Project::where('project_id', $request->get('project_id'))
+                    ->update([
+                   'ProjectName' => $request->get('project_Name'),
+                   'start' => Carbon::createFromFormat('d/m/Y', $request->get('project_StartDate'))->format('Y-m-d'),
+                   'End' => Carbon::createFromFormat('d/m/Y', $request->get('project_EndDate'))->format('Y-m-d'),
+                   'progress' => 100,
+                   'is_completed' => 1,
+                   'status' => 'Done',
+                   'ProjectDescription' => $request->get('project_description'),
+                   'updated_at' => Carbon::now()->format('Y-m-d'),
+                    ]);
+    
+                }
+                else{
+                    Project::where('project_id', $request->get('project_id'))
+                    ->update([
+                   'ProjectName' => $request->get('project_Name'),
+                   'start' => Carbon::createFromFormat('d/m/Y', $request->get('project_StartDate'))->format('Y-m-d'),
+                   'End' => Carbon::createFromFormat('d/m/Y', $request->get('project_EndDate'))->format('Y-m-d'),
+                   'progress' => $request->get('progress'),
+                   'is_completed' => 0,
+                   'status' => $request->get('status'),
+                   'ProjectDescription' => $request->get('project_description'),
+                   'updated_at' => Carbon::now()->format('Y-m-d'),
+                    ]);
+                }
+                return redirect()->back()->with('status',"Project Successfully Updated");
+              }
+              catch(exception $e){
+                return redirect()->back()->with('error',"Failed to Update Project");
+              }
+
+
+            
+           
+    }
+
+    // * For Deleting a Project
     public function deleteProject(Request $request){
         try{
             DB::table('projects')->where('project_id',$request->dlt_id)
@@ -70,6 +112,7 @@ class ManagerProjectController extends Controller
           }
     }
 
+    // * ajax for editing a project 
     public function edit($id ,Request $request){
         if($request->ajax()){
             $result=Project::find($id);

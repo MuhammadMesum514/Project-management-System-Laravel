@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 09, 2022 at 08:47 PM
+-- Generation Time: Sep 15, 2022 at 10:03 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -20,6 +20,20 @@ SET time_zone = "+00:00";
 --
 -- Database: `taskmanager`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Get_All_Task_Count_On_Status_Based_On_Project` (IN `projectID` VARCHAR(4))  select TaskName,
+   sum(case when task_status = 'New' then 1  else 0 end) as Completed,  -- only count status New
+   sum(case when task_status = 'Completed' THEN 1 else 0 end) as New,-- only count status Completed
+    sum(case when task_status = 'On Hold' THEN 1 else 0 end) as OnHold,-- only count status On Hold
+     sum(case when task_status = 'In Progress' THEN 1 else 0 end) as InProgress,-- only count status In Progress
+   count(*) as total
+from tasks WHERE tasks.ProjectID=projectID GROUP BY tasks.ProjectID$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -43,16 +57,16 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `name`, `phone`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Percy Jakubowski', '674', 'schuyler.parisian@example.net', '$2y$10$1nV8ogpoUdUhxX7CiawR7edPat6vnKz1i68ftxghmt42.LKRgML6q', NULL, '2018-04-21 11:54:10', '2010-07-11 08:55:03'),
-(2, 'Mr. Theo Cronin Sr.', '559', 'aryanna68@example.com', '$2y$10$X4vRYsLLAWLZnQVkbDzele4XYZHH900xrvviQSxo30e08BelKEsim', NULL, '1974-08-11 09:24:40', '2022-02-27 00:05:12'),
-(3, 'Prof. Annabel Kunde', '158', 'hortense02@example.net', '$2y$10$2MWl0jU6H3utOKjqUfpf8Ojf9bmtFQ2qMKmINLb7zneg0v6N6dfVq', NULL, '1979-01-04 19:30:51', '2000-05-05 05:14:20'),
-(4, 'Dr. Beulah Hudson Jr.', '141', 'salvador86@example.org', '$2y$10$k.HJbojVsVk0C5HOTjSsouZOSlDb4PvC2DssK8ahK2fN//x8qz0k.', NULL, '1997-06-08 14:33:36', '1976-06-10 08:25:28'),
-(5, 'Mr. Cruz Runolfsdottir', '329', 'kelsie.fay@example.org', '$2y$10$Na.GWc9FESGqezo3UDllpe2rbHGPYxQelUlo1RsIDzdE/Sdj5pgpq', NULL, '2009-07-27 09:53:37', '1979-12-02 21:46:56'),
-(6, 'Santos Wisozk', '561', 'zhickle@example.com', '$2y$10$s5tr9yMVrEFADTVaONlPj.MQd0kqpmhxOGkgh0tO8T8T2jFkC.xmO', NULL, '2021-11-19 17:12:23', '2003-02-24 23:31:05'),
-(7, 'Jarrod Stoltenberg', '217', 'borer.vince@example.net', '$2y$10$evNbeiPNP5D1wYSyel5vKudxnbKLaFzmjNAbY8VgQQWQ4SR6qyBn6', NULL, '1989-07-26 17:38:33', '2018-06-15 10:27:27'),
-(8, 'Sister Nicolas', '453', 'hlehner@example.net', '$2y$10$PLTbaORFzuLR2Ag7J3EKmOVIuBrK8hL5jE7RpXA2y6QoQmIC4iXBC', NULL, '1992-09-25 05:46:12', '2021-06-15 13:35:53'),
-(9, 'Elizabeth Nitzsche', '728', 'iframi@example.com', '$2y$10$tgvD2wtJtgMJ1Ww/6kq6XOplyVRiWmxlfuUKR10X7T//Z8pdmMrcK', NULL, '1979-03-23 12:38:57', '1994-09-04 02:30:08'),
-(10, 'Delphia Parker', '167', 'turcotte.rosie@example.com', '$2y$10$wRamKl.k/XxHscAYYfQ2AuDYAvb4CHNOJF0eavvR1uujIjH63PzHO', NULL, '2016-03-23 01:42:45', '2010-04-13 12:43:46');
+(1, 'Carolyne Pouros', '092', 'kratke@example.org', '$2y$10$p2gCHrmdwaKGsufTxEnthu4qN1BZeXecvhp56RSlwoIULicx9ZGX.', NULL, '1971-03-30 23:30:15', '1985-11-13 12:22:46'),
+(2, 'Noble Kiehn', '592', 'dnienow@example.com', '$2y$10$qRkUNkXGnIohV/3EumK/8O7.m7zLynAyXCcbr6Uz.vrmaRuf6UU7q', NULL, '2000-12-04 08:31:47', '1975-05-30 10:16:47'),
+(3, 'Noemi Beer Sr.', '413', 'rlueilwitz@example.net', '$2y$10$662TuC3yOp6HAZn98T5CRekmoPFW1aoa/CjSdGVOYBj.uGThulLUm', NULL, '1996-12-17 04:12:25', '1982-03-11 00:02:51'),
+(4, 'Ms. Clara Williamson', '507', 'jgottlieb@example.com', '$2y$10$IKZ1i5oj/xNsVORya0slqOhRaJ36yMTeBFxILCLv3oDWfP1DIPW7u', NULL, '2008-04-14 03:56:08', '2014-09-03 12:46:28'),
+(5, 'Lorna Towne', '060', 'jimmy.lowe@example.com', '$2y$10$s8OH3YwEMfuJfh/E6UXBgujQ276abesWtu8V8CjRKUsHNcWNs.MlG', NULL, '1997-07-22 05:52:18', '2011-11-14 12:17:17'),
+(6, 'Elsa Haag', '387', 'ryder.gibson@example.org', '$2y$10$hNoyiTzjUGBaVraNbLQB5eG.DLNtz..y2SR5hMf/8i2gLwEAqh2Ui', NULL, '1982-07-08 22:51:06', '2006-05-26 13:15:24'),
+(7, 'Jasmin O\'Conner', '720', 'bayer.reanna@example.com', '$2y$10$JNm6AmIOubxRFZNBLisTLeE6nlRyGtq2d6jj.d/Rr7KsgMMzg.hQ.', NULL, '2015-10-05 23:28:28', '1978-04-07 09:10:10'),
+(8, 'Dr. Deven Bednar', '810', 'birdie50@example.com', '$2y$10$Z9PYui6VS78F9e1kumcSlOjROQ9cfV6X6LWXwZV78uJUhdfHVvjKS', NULL, '2005-02-01 11:34:53', '1997-08-27 20:06:03'),
+(9, 'Heather Lesch', '521', 'nschulist@example.com', '$2y$10$TG127mM0vJthJM8i.VrEUudrTvGF5VrtrUn3OJ0kkojeAbsZjqXve', NULL, '1988-05-29 23:38:45', '2012-10-22 20:29:26'),
+(10, 'Nayeli Harris I', '583', 'leuschke.dessie@example.net', '$2y$10$bvjS0wlrQCjTwzlDkOmP1eQScR1ghdVzkj4wd/3wf8M.uoWzZWfLa', NULL, '1988-08-14 14:28:20', '1990-01-17 06:28:18');
 
 -- --------------------------------------------------------
 
@@ -93,16 +107,16 @@ CREATE TABLE `managers` (
 --
 
 INSERT INTO `managers` (`manager_id`, `name`, `department`, `designation`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Jameson Lockman', 'Schmitt-Ward', 'Runte, Grimes and Huels', 'boberbrunner@example.org', '$2y$10$R/CYzrc0OZuREAD5HX5FN.z77FjS6nNc8oOiXZ9w8BzyZMZhF4Jgy', NULL, '1996-06-20 09:20:10', '1991-10-20 04:57:05'),
-(2, 'Jayson Conroy', 'Hoeger Group', 'Botsford PLC', 'jamar31@example.net', '$2y$10$C6JmAgibgc9UBjKccawkF.bwsmodZhClGmMHwpK9zadfj6WScKUtm', NULL, '2003-12-06 00:49:10', '2013-07-16 01:41:01'),
-(3, 'Mr. Bailey Gerlach', 'Wiza and Sons', 'Marks, Weimann and Streich', 'mertie84@example.org', '$2y$10$4FktfPhHk/T6wzzrM21HD.Ru0QdhQ5i/DQDX4SUAv7P6hvJJ94Fl.', NULL, '2004-06-06 07:02:24', '1991-01-07 06:35:33'),
-(4, 'Berry Cruickshank', 'Crona-Tremblay', 'Daniel LLC', 'rudy.olson@example.net', '$2y$10$9YfFnTx7.HN8.2AtYubmMeeuAxqOfG4VM46Cojl49n4ZQy16.E56q', NULL, '1991-08-15 07:24:06', '2021-05-14 00:42:27'),
-(5, 'Christa Kuhn', 'Bechtelar, Wolf and Harber', 'Kub, McDermott and Kulas', 'lonny.kuhlman@example.com', '$2y$10$TgzTqoa7SW3UimjP7K5WeeKOA3mV8rr/YtcPBOq7ioQP7N2BrO43.', NULL, '2017-02-08 19:32:54', '1979-09-18 21:26:35'),
-(6, 'Connie Davis', 'Jones-Stokes', 'Moen-Tromp', 'dshanahan@example.com', '$2y$10$gFlj79Cbl7.CpskiPTObFeuSMvEhui4bavkccc46gYBn35KRYilm6', NULL, '1984-01-07 08:01:56', '1984-11-01 22:07:34'),
-(7, 'Sim Rolfson', 'Wisozk, Durgan and Lind', 'Willms, Stoltenberg and Buckridge', 'marco24@example.com', '$2y$10$1/m2ZDDjxLlhGruJ/mxMJO0fndaMLVuXCNrnAMMBLTK4vzcxsjT4m', NULL, '1997-09-28 19:07:22', '1996-09-13 13:00:38'),
-(8, 'Carlos Bosco', 'Ward-O\'Connell', 'Johnson, Huels and Thompson', 'chris.braun@example.org', '$2y$10$qmIstvscTp4C11zIEAmgAOjz5AgLRO9rfML51SBzHYr2JOme6C1/S', NULL, '2010-11-09 13:08:58', '2004-08-18 03:23:56'),
-(9, 'Dr. Jermain Kohler', 'Schoen-Morissette', 'Lindgren Inc', 'abogan@example.net', '$2y$10$rUzAytkacTAD9/t0.nrGD.5hsm5ABNNAPTidZ9yoCpc.aL3Rcl2Qy', NULL, '1994-03-08 04:12:05', '1972-07-24 16:18:46'),
-(10, 'Marjory Hessel', 'Rice-Franecki', 'Kuhlman, Wunsch and Hackett', 'adolfo.daugherty@example.com', '$2y$10$upBVM7Bsqct1Wk3g8cL3YO1wFF.OdvfX8rSwtVkhvGf1brKzm1a.G', NULL, '2022-08-07 09:39:38', '1973-04-25 03:20:52');
+(1, 'Shyann Blick', 'Hammes, Kilback and Botsford', 'Volkman-McGlynn', 'egleason@example.org', '$2y$10$QWr/eqQo1V6ZVnikcj5jrOsbR81pegCUjDPxxfXelcNbwznVqxZOW', NULL, '2013-05-17 15:33:04', '1973-07-25 06:17:27'),
+(2, 'Mrs. Pink Hayes', 'Quigley Inc', 'Becker, Keebler and Satterfield', 'cwest@example.net', '$2y$10$wnfB.B47MI09NlzfGX71buocEgoSHdxuI/IHJG203uQO22mxwbJTa', NULL, '1980-05-29 03:35:38', '1974-01-20 19:06:58'),
+(3, 'Mr. Eldon O\'Hara DDS', 'Rolfson, Schmeler and Kerluke', 'Larson, Crist and Gorczany', 'quitzon.zack@example.org', '$2y$10$VLuSpUVHLeWhxy4AbquGGOh/tTtuzGqlLoWKIDuml0fnyeTwBD7Eq', NULL, '1983-10-08 11:40:36', '2001-12-12 13:00:57'),
+(4, 'Maximus Bode', 'Tillman, Ankunding and Hudson', 'Klein-Barrows', 'athena05@example.com', '$2y$10$ZV.JjEHMePYBPfSMPeqCa.RQ8FTz3r/SKsI5.264Z/FU4LnNHM7FK', NULL, '2021-07-10 07:19:20', '2003-05-24 04:04:37'),
+(5, 'Melvina Hyatt', 'O\'Reilly-Cole', 'Anderson, Skiles and Orn', 'vkoepp@example.org', '$2y$10$adRnHwuNmI0SRJsBWW11Hu6SjJa7LZYjEw/2T7zSg7bVlkQ4/F8z2', NULL, '2005-06-11 13:47:21', '1978-02-24 17:59:24'),
+(6, 'Mr. Caleb Murray III', 'Stehr, McClure and Simonis', 'Gerhold-Jaskolski', 'shany49@example.net', '$2y$10$LYwySkJHs2mOS/XmZl5aRuHXOVEUZOd0cYvQ3g6PTv30exs3VrBAi', NULL, '1974-06-08 06:12:32', '1998-07-07 04:15:51'),
+(7, 'Mr. Christophe Vandervort', 'Ziemann, Kohler and Schneider', 'Jast-Ankunding', 'qbayer@example.com', '$2y$10$upawn1UlFR25H3kpawFVx.XPLEqynQW9XS8aWUPML4YfFv0TmPzEa', NULL, '1987-03-09 12:58:59', '1983-07-21 07:43:32'),
+(8, 'Bernadine Padberg Jr.', 'Schulist-Hudson', 'Stamm-Halvorson', 'tyrel51@example.com', '$2y$10$B6GtH29Pg526caVUjU0AJu6qyC5wKk6IMmSmF3QeJlHmnn68rWYTe', NULL, '2016-05-06 14:14:53', '1972-11-02 12:57:50'),
+(9, 'Ines Sanford V', 'Romaguera, Langworth and Abshire', 'Wehner, Jakubowski and Bosco', 'lynn01@example.org', '$2y$10$C/lPaMrtoaee4JGtXksN8.3J93cn1mSCNCfGn1MTUG8buE46fg8iC', NULL, '1973-07-15 01:42:59', '1991-02-19 06:53:20'),
+(10, 'Alphonso Turner', 'Dietrich-Rutherford', 'Klocko-Renner', 'edouglas@example.org', '$2y$10$W6CUuGNtu4QS4MhNiAVR.eTTbGKZu6wGol7ku5Mj54N0MJnv7/D.u', NULL, '1977-05-05 04:09:39', '2003-09-13 15:51:38');
 
 -- --------------------------------------------------------
 
@@ -129,9 +143,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (6, '2022_09_06_152944_create_teams_table', 1),
 (7, '2022_09_06_152945_create_user_team_table', 1),
 (8, '2022_09_06_153000_create_projects_table', 1),
-(9, '2022_09_06_153053_create_tasks_table', 1),
-(10, '2022_09_06_153109_create_task_details_table', 1),
-(11, '2022_09_06_160255_create_user_task_details_table', 1);
+(15, '2022_09_06_153053_create_tasks_table', 2),
+(16, '2022_09_06_153109_create_task_details_table', 2),
+(17, '2022_09_06_160255_create_user_task_details_table', 2);
 
 -- --------------------------------------------------------
 
@@ -157,9 +171,9 @@ CREATE TABLE `projects` (
   `start` date NOT NULL,
   `End` date NOT NULL,
   `ProjectDescription` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_completed` tinyint(1) DEFAULT 0,
+  `is_completed` tinyint(1) NOT NULL DEFAULT 0,
   `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'New',
-  `progress` int(11) DEFAULT 0,
+  `progress` int(11) NOT NULL DEFAULT 0,
   `TeamID` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -170,16 +184,16 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`project_id`, `ProjectName`, `start`, `End`, `ProjectDescription`, `is_completed`, `status`, `progress`, `TeamID`, `created_at`, `updated_at`) VALUES
-(1, 'Bradtke-Kub', '2011-10-21', '1988-02-29', 'Sed ratione ab explicabo commodi vitae numquam. Sit iure velit qui consequatur excepturi. Minus velit vel neque voluptatum veniam ut eum. Tenetur velit impedit necessitatibus mollitia ut dolorum magnam. Ratione quos quas at quis iusto rerum. Eos distinctio consectetur magni ab. Esse nihil minima iste. Culpa est eum ipsum sit ab fuga. Vel nesciunt architecto vero perspiciatis et. Iure itaque magnam repellat et architecto odit omnis. Consequatur illo ut tenetur consequatur illo unde totam. Repudiandae et qui laboriosam cumque. Occaecati quidem nesciunt similique repudiandae dolore. Harum numquam similique eum doloremque ducimus optio. Rem consectetur provident fugit aut voluptas molestiae possimus rerum. Facere deleniti nostrum aut ducimus facere. Vel autem excepturi voluptatibus et. Id officiis quibusdam ea provident. Numquam pariatur impedit corrupti tempore officia. A adipisci earum in omnis velit et consequatur ut. Cumque maxime ducimus ratione maxime. Adipisci ratione exercitationem illum occaecati facilis optio quam. Quibusdam qui perferendis corporis distinctio sit et sapiente. Iusto corrupti ut id et autem magnam quidem eligendi. Asperiores illo corrupti minima non. Quisquam occaecati facilis quis beatae magnam incidunt odio. Mollitia id sit aut. Vitae quo omnis libero ut voluptatibus fugiat. Adipisci expedita dolorem dolorem omnis voluptatem expedita. Et iusto eligendi fugiat natus ut dolor non. Labore consequatur tempora laudantium voluptatem in dolorum voluptas est. Sit sit repellendus maiores odio rem illo ipsum deserunt. Tenetur omnis quaerat recusandae qui. Quam architecto aliquid unde qui consectetur neque quia. Nobis occaecati fuga eaque possimus id praesentium. Dolore est explicabo alias. Est praesentium eum eius deserunt molestiae sunt sit enim. Et magni facere rerum deleniti eum aut. Aut consequatur omnis adipisci iusto delectus sapiente soluta quia. Unde perferendis sit aut corrupti. Dolor laudantium beatae est velit dignissimos soluta. Nisi qui harum illum voluptatem est sed corrupti. Occaecati est id laborum dolores qui fugit.', 0, 'New', 0, 6, '2019-09-10 02:27:21', '2019-05-30 07:37:26'),
-(2, 'Fay Inc', '2013-06-29', '1997-05-01', 'Incidunt et est et rem molestias maiores laborum. Voluptatem occaecati numquam totam rerum natus sed. Minima veritatis sed aut deleniti non ut. Ipsum consequatur sapiente expedita dicta. Repudiandae consequatur itaque eaque ut qui beatae et. Commodi in enim sed error asperiores voluptatem et iusto. Sunt quo quasi reiciendis autem. Explicabo voluptatem dolor qui enim amet et. Sunt quaerat aut velit cumque voluptatem aspernatur soluta. Inventore aliquam et distinctio veritatis magnam assumenda. Omnis sit nesciunt nemo laboriosam est quia. Officiis cupiditate magnam sunt. Veniam officia eius corrupti dolorem fuga. Voluptatem magni quas libero aliquid dignissimos. Quisquam consequatur quia inventore. Quasi magni velit autem excepturi occaecati aperiam sit. Unde id hic possimus doloribus. Ipsum corrupti voluptatem eum fuga. Omnis odit provident voluptas voluptatum officiis quia. Quo vero fugiat velit repellendus. Voluptatibus ducimus aliquid quis vel. Autem dicta enim quos assumenda in omnis omnis. Veritatis et dicta ea non velit consequuntur inventore.', 0, 'New', 0, 6, '1984-06-05 04:11:02', '1986-09-07 12:12:56'),
-(3, 'Bartoletti PLC', '1999-08-01', '1997-02-20', 'Earum nisi impedit vero rerum ea. Architecto dolorem quasi vel earum possimus architecto quidem. Neque optio deleniti perspiciatis facilis. Atque dolor ipsum ut non est ea corporis. Impedit soluta eum sed dolorem suscipit. Ut non voluptas a natus architecto nam sit non. Voluptatem repellendus sunt iusto ratione ut. Quam voluptas voluptatibus earum voluptatibus id amet ea dolores. Asperiores veniam et laborum praesentium molestias. Error repudiandae id et ipsum minus qui. Cumque perferendis tempora quis dolores assumenda doloremque iusto. Earum perferendis voluptatem dicta impedit non reprehenderit qui. Non nam nam quia repellat unde qui. Consequatur laudantium veniam est ipsum. Dolorem voluptatem inventore ut nihil. Quaerat sequi similique tempore voluptas. Et iusto qui ad at aut facilis odit. Molestiae perspiciatis dolorum et ipsum omnis error et. Mollitia et voluptatem ut facilis ut amet. Voluptates eligendi consequatur aut reiciendis. Aliquid perspiciatis necessitatibus minima ut. Pariatur cum et temporibus quo. Deleniti quos reprehenderit aut. Beatae iste libero dolores ipsam est dolore molestias. Molestias temporibus iste enim. Odio alias unde repellat. Atque iure dignissimos sit dolore. Enim quo est nihil voluptate voluptatem atque et nesciunt.', 0, 'New', 0, 6, '2005-02-24 08:15:44', '1976-08-16 23:06:08'),
-(4, 'Koepp Group', '1978-09-24', '2020-03-28', 'Ut officia necessitatibus eos exercitationem eum sint. Fugit praesentium veniam dolor tenetur cupiditate. Totam odio neque dolor porro autem inventore occaecati. Exercitationem incidunt nihil neque est fuga totam quidem. Voluptas suscipit dolores rem et qui. Sunt id in dolorum quos. Harum ut neque ab itaque eos. Et sit harum ullam voluptatem. Unde earum iste iure provident dolor et natus rerum. Illo aut ipsa itaque ipsum dolorem totam. Nihil consequuntur omnis saepe omnis. Velit maiores et quia repudiandae quia. Culpa illo dicta dolores nulla ut iusto. Facere laboriosam occaecati autem nostrum. Est enim ullam repellendus ut qui aut natus. Maiores optio et sint rerum alias. Eos provident est dolores minus quo velit voluptas. Accusamus aut excepturi nostrum est. Quia numquam nobis est temporibus asperiores. Voluptas voluptatem dolorum pariatur odit deserunt. Perspiciatis aut eum aliquam ea provident est ut asperiores. Rem voluptatem est et. Voluptas est et temporibus. Consequatur natus nisi molestias natus quis et sed. Itaque enim molestiae autem nobis voluptatum perspiciatis. Velit velit sed nisi quidem. Dolor fugiat odio distinctio voluptas molestiae aut. Cumque laborum sunt beatae est dignissimos ut necessitatibus quia. Alias inventore rerum eaque dignissimos. Ea eveniet id dolores officiis. Vel iusto dolore vero autem fugit dolores doloremque.', 0, 'New', 0, 6, '2015-03-29 11:25:33', '1987-01-26 18:55:40'),
-(5, 'Feeney, Gibson and Simonis', '2014-08-11', '2002-07-21', 'Possimus rerum repellat provident eligendi quo et. Nemo a magnam quis libero iusto reprehenderit. Facilis ut dolores enim ipsa. At assumenda omnis nulla quos animi consequatur odit. Sit eligendi asperiores numquam cumque sint doloribus. Praesentium nihil veniam quos animi ipsam. Nam recusandae earum fugiat. Odio ullam harum placeat reiciendis quia corrupti quis. Aperiam consequatur sunt voluptatem illo qui est. Sed sunt optio et. Illo velit ducimus tempora eveniet sint sed hic. Dicta velit numquam ratione et sed. Voluptatum rem aspernatur qui similique dolore unde quam quia. Velit consequatur qui dignissimos sit nihil nam. Eum ea quia expedita excepturi ut consequatur soluta. Consequatur quo velit aut sit. Temporibus autem et enim voluptas similique officia. Ea ea dignissimos veritatis animi ut. Animi accusamus magnam quis accusantium vel. Dignissimos nostrum deserunt qui quas optio tempora nam. Molestiae eaque tempora numquam rerum eum ratione. Porro et nemo sit harum autem.', 0, 'New', 0, 6, '2019-02-21 00:47:55', '1998-06-12 16:54:09'),
-(6, 'O\'Connell-Wiegand', '2006-11-16', '2014-04-26', 'Aliquam sint et aut excepturi. Dolor deleniti totam maiores molestias. Sequi neque impedit accusantium nihil. Nihil ipsa sequi voluptatem sint est. Omnis recusandae ut omnis ut voluptatum corrupti. Qui porro rerum aut assumenda. Esse quas explicabo ut necessitatibus quia doloremque omnis. Ut aut quia ex magnam harum velit vero. Alias magnam et dolorum voluptatem. Eligendi laborum aperiam ab voluptas corporis voluptas. Dolores aut quibusdam expedita veritatis enim praesentium. Repudiandae amet corporis consequatur nisi eveniet voluptatem. Quo quas et nulla itaque. Sed eveniet et porro et natus eos. Deleniti nulla qui porro nulla ea commodi. Ea ab error quo quis. Eaque omnis voluptatem libero error. Neque est sed neque nesciunt illum repellat. Quo alias rerum ducimus.', 0, 'New', 0, 6, '2004-01-01 19:29:25', '1990-02-01 15:13:50'),
-(7, 'Rutherford PLC', '1992-07-16', '1970-06-02', 'Sint nemo quidem sit et ut omnis cum non. Provident ut perferendis est magnam provident qui. Libero voluptatem voluptas modi. Nostrum aut consequatur quibusdam illo doloribus rem consequatur. Maiores tempore hic a qui sed doloribus. Minus aut quod aperiam perferendis quaerat. Exercitationem minima facere aliquid et. Ipsum consequuntur totam et dicta sunt dignissimos. Ea deleniti at dolorum qui dignissimos qui consequatur. Et veritatis minus cumque quis sed est. Ut est iste ut culpa accusamus. Iusto quia ducimus ab magnam ea harum assumenda facere. Consequatur vel laudantium dicta quasi natus tempora. Doloremque sunt rerum consequatur sed est voluptatibus veniam. Et reiciendis unde officia et excepturi minus. Ab voluptas rerum sed soluta ea in maxime. Doloribus illo enim aut omnis aut quia. Ratione quos exercitationem sit quod unde cumque sit. Aut dignissimos optio quis.', 0, 'New', 0, 6, '2010-09-23 03:02:33', '1993-04-27 13:42:39'),
-(8, 'Feest, Aufderhar and Block', '1990-02-07', '2020-04-13', 'Ipsum sunt quia vero earum adipisci cumque et. Reiciendis distinctio velit ipsa. Pariatur placeat accusamus facilis vel. Aspernatur necessitatibus quia distinctio dolor. Porro ea et quae. Architecto quaerat vel non qui est magnam. Earum impedit suscipit rerum sint maxime quae aut quia. Sequi tempore non adipisci vitae perspiciatis perferendis blanditiis dicta. Repudiandae aliquam inventore et tempora cumque. Excepturi ducimus sint natus sint consequuntur. Veniam libero fugit dolores. Et adipisci aut officia incidunt eos rem repellat. Sed vel et cumque provident et. Aut non reprehenderit odio. Id praesentium similique sint hic optio quod. Quibusdam ut et maxime vel iste id facilis. Et exercitationem est et. Nihil et quod dolor eveniet repellat et. Qui molestias beatae enim sapiente quaerat tempore consequuntur. Molestiae tenetur ratione minus dolorem dignissimos et quaerat. Odio quos amet debitis illo quisquam error enim. Quas perferendis atque quos qui voluptates. Aut itaque repellendus ut laboriosam voluptates. Quia quia hic harum cupiditate aperiam. Odit et impedit magni. Vitae error veniam aliquam nihil ex aut. Molestias sint et asperiores ex nihil assumenda non et. Assumenda sed ea sit. Placeat aut quis rem id. Dolorem necessitatibus velit sed corporis. Aut voluptas non omnis aut. Molestiae ea commodi quo sed sit assumenda et. Et facere sunt aut et et. Aliquam ut accusamus culpa quo officiis. Soluta qui ut cumque mollitia ex sunt alias.', 0, 'New', 0, 6, '2016-02-14 02:13:41', '2005-11-25 16:44:06'),
-(9, 'Jaskolski, Funk and Marquardt', '2009-12-18', '1986-01-31', 'Nihil voluptatem dolorum dolorem ipsum maxime. Quos voluptatem et dolorem autem. Optio sunt non aliquid quis. Incidunt inventore dolorem sunt ut quisquam dolor. At nulla repellat accusamus sed beatae. Facilis doloribus harum ut quibusdam aspernatur eaque et. Velit recusandae quis ipsam iusto id sunt. Nostrum distinctio consequatur repellendus quia. Veritatis facilis numquam harum vero in beatae voluptas eligendi. Qui voluptatum excepturi mollitia dolor at magni dolores. Consequatur soluta velit eos saepe. Non quis nobis quae voluptates ipsam praesentium voluptatem. Quia officiis sit alias aliquam. Facere velit quia ut assumenda in. Tempora voluptas commodi ab animi. Vel voluptas impedit incidunt quasi consectetur sed. Eos itaque sit ea sapiente inventore quisquam et aut. Voluptatem quod alias in fugit dolorem. Ut voluptatem dolores at illum. Temporibus laborum eos illo alias rem ab facere. Repudiandae ducimus consectetur ipsam iste sed omnis harum. Maiores deleniti accusantium qui soluta itaque. Sunt incidunt qui magnam dolor accusamus reprehenderit. Et et corrupti provident esse consectetur exercitationem. Blanditiis quis deleniti nostrum aliquam nemo. A a et aut illum. Quibusdam et suscipit cumque perspiciatis qui esse eaque. Repudiandae sint magni hic non. Ab omnis aut iste et enim vitae. Quibusdam eum sint animi aspernatur neque. Ut quis quisquam deserunt et ipsa occaecati qui sed. Eum nam pariatur atque nulla incidunt. At aut et eius blanditiis necessitatibus ut ut laboriosam. Modi voluptatem officia et ab repellat animi odio. Dolor aut vero qui voluptates reprehenderit dolore. Sed qui repellendus quaerat tempora dolorum sed explicabo. Harum sit quas numquam. Quam quis molestiae fuga quos. Et ipsam a sapiente. Ipsum rerum voluptatibus atque rerum.', 0, 'New', 0, 7, '2004-01-16 10:44:43', '1972-07-17 00:19:56'),
-(10, 'Denesik, Kovacek and Collier', '1993-02-04', '1973-10-24', 'Ipsum sunt consequatur vitae aspernatur molestiae. Maiores facilis ut ad non consequatur. Consequatur qui qui earum est error error. Consequuntur ut ullam cumque quia voluptates in perspiciatis. Autem consequuntur iusto nisi. Quaerat eligendi consectetur non harum veritatis. Quam exercitationem quibusdam dolor dolore. Exercitationem incidunt officiis accusamus voluptates iusto aut et. Aut voluptate minus qui quisquam accusamus nostrum commodi. Qui cumque doloribus quis vero. Sint illum enim et possimus. Voluptate ipsa quam saepe aut. Corrupti rerum sapiente odit hic rerum. Totam quo assumenda quaerat ipsum quia aut. Nesciunt voluptatem tempore est eligendi. Odio suscipit illum sint beatae aliquid ipsa ut. Voluptatem voluptatum dolor id quia dolor eveniet dolorem. Maxime est illo voluptate. Magnam tempora totam et et possimus aut blanditiis. Enim reiciendis perferendis sed omnis exercitationem quo omnis. Maxime quia cupiditate tempora. Porro et ut est at. Ea sint est qui omnis suscipit quidem aut. Distinctio aperiam corrupti amet non sunt suscipit voluptatem.', 0, 'New', 0, 6, '1972-08-29 18:07:45', '2008-08-30 08:05:00');
+(1, 'Predovic LLC', '2000-05-05', '1975-10-31', 'Et eligendi harum voluptates aut consequatur. Ab omnis non sit sint rerum voluptatibus nihil. Eveniet nobis commodi ea repudiandae. Et quia doloremque vitae perferendis ea et veritatis commodi. Dignissimos et quis ipsam suscipit quia. Perferendis laudantium quo ducimus hic explicabo quisquam omnis consectetur. Et laboriosam debitis magni rerum. Consequatur consequatur id voluptatibus excepturi nostrum cupiditate. Voluptas voluptas veritatis commodi earum fugit officiis. Accusantium voluptatem exercitationem sed ab officia. Vel eligendi vero consequatur qui. Qui inventore dolor quia eum dolorem eveniet. Illo vel reprehenderit illum porro sed. Corporis numquam facere doloremque neque repellendus culpa magnam eveniet. Ea non consequatur perferendis sed id perspiciatis. Est quis dolor ad quod. Est vel et expedita ut molestiae qui. Aut minima amet recusandae eos aut in quod nobis. Quas et voluptatem consequatur dolorem similique. Quis voluptatem veniam est ea.', 0, 'New', 0, 1, '2005-07-14 19:54:30', '2022-08-05 20:41:20'),
+(2, 'Metz Group', '2004-12-15', '2015-01-11', 'Officiis sit pariatur qui veniam assumenda. Earum libero ut nostrum enim sint dicta doloremque voluptas. Sint veritatis excepturi accusamus id optio. Nisi repellendus voluptatem dignissimos ullam rem ut labore. Explicabo qui corporis amet. Iure officia quae et sunt praesentium voluptates. Laudantium quae asperiores iste assumenda. Sed est repudiandae commodi voluptatem dolorum. Odio maxime omnis et voluptas voluptate. Hic error perferendis autem voluptas sit recusandae. Sint doloremque consectetur illum corporis. Sequi sit voluptatem voluptatibus corporis. Ut et corporis beatae sunt qui sint. Odit voluptatum laudantium modi amet officiis quod. Ut ratione architecto et minus unde quam et. Esse et maxime et quis ea quia eveniet. Voluptas sunt necessitatibus illo sint. Expedita recusandae libero rerum qui eligendi unde voluptates. Consectetur quaerat minus in dolor possimus necessitatibus. Qui voluptatum velit quas sit nostrum. Illum molestiae quia vel veritatis quo sed. Quidem est in modi sed qui. Sit perferendis dignissimos incidunt explicabo ab cumque. Molestiae ipsum omnis inventore quia vel quaerat vero. Maiores distinctio impedit numquam cum dolores molestias in. Non voluptatem a doloremque et voluptas sunt. Cupiditate debitis cum aut tempora consectetur. Repellendus molestias excepturi voluptatem commodi. Similique nesciunt repellendus ipsum veritatis. Facere natus similique suscipit quibusdam qui dolores autem. Aut quo quia vitae quasi assumenda eligendi ea. Eos impedit debitis quo laboriosam vel. Rerum et ut id magnam consequatur eum sapiente ab. Voluptas beatae inventore amet doloribus nam expedita. Consequatur magni earum maiores rerum et natus.', 0, 'New', 0, 2, '1971-09-23 20:03:24', '2005-03-18 15:16:27'),
+(3, 'Schaden, Bins and Hermiston', '2020-10-23', '1981-01-26', 'A quisquam facilis a quod est a non et. Illum qui ipsum sed voluptatum dolorem. Quo voluptatem quo laboriosam qui. A animi sit quisquam hic. Porro ipsum autem ut illo assumenda. Autem porro quam et quasi enim. Molestiae quia modi qui laboriosam voluptatem soluta. Unde provident animi vitae consectetur. Recusandae officiis sunt autem explicabo. Voluptatem et et cumque aut magnam sed est dolorum. Impedit sunt occaecati esse amet recusandae. Odit soluta omnis aspernatur nihil. Expedita similique omnis quae. Repudiandae sed consequatur soluta hic quia dignissimos error. Qui consequatur aut sunt architecto distinctio rerum ipsum. Accusamus maxime sint praesentium. Provident blanditiis dolore ad totam. Ut ipsa eaque fugit tempora iusto error. Quia autem dicta vitae fugit esse. Ut possimus iste ducimus rem reiciendis enim eum id. Inventore in voluptates et minus distinctio. Quia vero illo aut repudiandae sunt. Sunt commodi est magni id consectetur autem illum. Dolore et ut impedit nesciunt magni. Molestias molestias voluptate unde nihil rerum aut. Expedita a explicabo hic dicta commodi. Fugit ratione quibusdam delectus possimus mollitia dolorem facilis occaecati. Fugiat sint facere officiis et id autem. Optio soluta natus voluptates in. Sed laborum at omnis possimus deserunt quia qui. Dicta accusamus quia omnis ipsam nihil animi. Autem aut iste esse corporis ratione sit.', 1, 'Done', 100, 1, '1993-07-14 22:38:30', '2022-09-14 19:00:00'),
+(4, 'O\'Conner Ltd', '2008-10-09', '2015-05-29', 'A quisquam facilis a quod est a non et. Illum qui ipsum sed voluptatum dolorem. Quo voluptatem quo laboriosam qui. A animi sit quisquam hic. Porro ipsum autem ut illo assumenda. Autem porro quam et quasi enim. Molestiae quia modi qui laboriosam voluptatem soluta. Unde provident animi vitae consectetur. Recusandae officiis sunt autem explicabo. Voluptatem et et cumque aut magnam sed est dolorum. Impedit sunt occaecati esse amet recusandae. Odit soluta omnis aspernatur nihil. Expedita similique omnis quae. Repudiandae sed consequatur soluta hic quia dignissimos error. Qui consequatur aut sunt architecto distinctio rerum ipsum. Accusamus maxime sint praesentium. Provident blanditiis dolore ad totam. Ut ipsa eaque fugit tempora iusto error. Quia autem dicta vitae fugit esse. Ut possimus iste ducimus rem reiciendis enim eum id. Inventore in voluptates et minus distinctio. Quia vero illo aut repudiandae sunt. Sunt commodi est magni id consectetur autem illum. Dolore et ut impedit nesciunt magni. Molestias molestias voluptate unde nihil rerum aut. Expedita a explicabo hic dicta commodi. Fugit ratione quibusdam delectus possimus mollitia dolorem facilis occaecati. Fugiat sint facere officiis et id autem. Optio soluta natus voluptates in. Sed laborum at omnis possimus deserunt quia qui. Dicta accusamus quia omnis ipsam nihil animi. Autem aut iste esse corporis ratione sit.', 0, 'In progress', 55, 1, '2011-11-07 17:31:17', '2022-09-14 19:00:00'),
+(5, 'Lynch, Shanahan and Ziemann', '1977-03-08', '2005-06-12', 'Autem enim eum sit qui. Nemo vel aut et vel aut corporis. Odit in neque deserunt totam aut quis non labore. Facilis voluptas sit in eum. Ad iste repellendus exercitationem sit et odit ratione. Et provident quia qui optio autem laboriosam. Consequatur repellendus provident et eligendi eius ipsa. Consequatur nam est in totam. Dolorum qui accusantium nostrum necessitatibus est nam quo rerum. Doloremque rerum quasi qui nam. Molestiae eos quibusdam sed minus ut ut amet. Voluptatem laboriosam natus dolor. Qui est eos officia veniam. Reiciendis mollitia quidem ut possimus sit. Rerum amet dicta commodi optio sapiente error sequi molestias. Commodi ea perspiciatis ut placeat ipsam. Neque tempora placeat cupiditate explicabo voluptatem voluptatem qui. Quae autem omnis est sint. Facilis recusandae dolorem dicta eligendi ea. Officia modi dicta molestias sint iusto. Corrupti quod odit quos pariatur voluptatem voluptas. Quod placeat similique assumenda id eligendi aspernatur. Deserunt consectetur ut natus qui sit perspiciatis reiciendis cum. Quisquam repellendus dolor harum ut voluptatibus odio laboriosam. Modi et et officiis harum quisquam explicabo. Neque consequatur consequatur corrupti quo et saepe. Quidem optio ab vero numquam. Corporis quaerat rerum voluptatem quis voluptatem dicta porro autem.', 0, 'New', 0, 2, '1999-05-18 03:33:46', '1993-04-21 17:21:01'),
+(6, 'Borer-Gleason', '1970-06-29', '2013-03-16', 'Laborum assumenda rerum consequatur enim est saepe. Rem sit vitae repellendus sed. Suscipit dignissimos rerum sed omnis ut a. Nihil eum laudantium tempore. Sed nam reprehenderit magnam est. Incidunt vel animi est esse reiciendis magnam. Adipisci enim eligendi dolore voluptas accusantium. Sed est maxime non alias. Molestiae cumque ea consequatur unde. Consequatur cupiditate dolorem quod ut. Blanditiis rerum quasi eos natus. Eum non enim consequatur corrupti ab error quidem et. Non accusantium aperiam qui sit rerum quo deserunt. Molestiae aliquid odio impedit quo quis. Dolore molestias eos quia natus dicta ut modi. Voluptatem molestiae dolor omnis consectetur ducimus ut est porro. Et incidunt et voluptatibus est aliquam. Vel dolorem omnis temporibus nam error quasi. Aut sed eaque molestias fuga molestias.', 0, 'New', 0, 2, '2020-10-22 15:50:17', '2020-08-13 13:53:25'),
+(7, 'Grant-Hessel', '1994-07-29', '1976-03-04', 'Aut dignissimos nam nihil ea aut numquam. Minus alias perspiciatis consequatur praesentium. Nobis eligendi non fuga ratione sunt. Quo itaque animi explicabo qui ut. Quae veniam est sit dolorum rerum optio qui. Facere delectus aliquam blanditiis voluptates consectetur totam. Est ducimus omnis autem iusto occaecati. Voluptas numquam officiis voluptatum deleniti rerum. Deserunt voluptate vel eaque itaque. Quae qui voluptate quia eius aut facilis. Non ipsam fuga sed sint necessitatibus commodi ut dolores. Dolorum enim possimus delectus assumenda enim esse illo ut. Laboriosam eos maiores molestias accusantium aut. Quidem asperiores in ipsam minus velit et. Aut dolor dolores et fugit. Minima dolorem saepe cupiditate animi saepe. Nisi libero dolorem aut officiis odit fuga soluta velit. Fuga cupiditate asperiores reprehenderit. Aut sit praesentium sed nesciunt quas quia. Non voluptas aliquid qui molestiae. Dolorem dolor saepe commodi ducimus voluptatem recusandae autem maxime. Quam repellendus voluptatum quibusdam accusantium vero occaecati. Id hic eos iste ut. Quae recusandae magni blanditiis qui. Nihil labore fugit veniam ut iusto nulla quia esse. Neque quo aut tempora dolores est et. Repudiandae qui sed quia rerum ex nobis. Ducimus perferendis ut sed nulla dolores cumque cupiditate. Qui a nisi illum laudantium at. Eum aperiam omnis dolores sit voluptates labore cupiditate.', 0, 'New', 0, 1, '1976-05-24 05:33:40', '1990-06-12 20:50:55'),
+(8, 'Crooks LLC', '1998-03-24', '1984-01-23', 'Nam autem porro et. Officia nostrum fuga quia doloribus. Facere numquam rem voluptatem iste ipsam maiores natus facere. Dolorum praesentium exercitationem ducimus et et. Aut saepe ab libero et quos reprehenderit eum. Et repudiandae sint consectetur quis placeat quo mollitia. Id molestiae qui soluta debitis eum est voluptatum. Accusantium fugiat perspiciatis nisi. Non sed culpa occaecati magnam aliquid. Est vel et sit impedit. Rerum in et repellendus at. Ut dolorem accusantium non eos. Quia et suscipit doloribus quos. Velit et necessitatibus qui voluptas id voluptas. Dolore enim et est aut unde. Doloribus similique blanditiis sit eum facere sed sunt. Non repellendus aliquid suscipit placeat consequatur. Delectus cum corrupti et voluptatem quod. Sapiente occaecati officia magnam est qui placeat tenetur explicabo. Dolores omnis est officiis qui deleniti. Repellat pariatur voluptatem dicta. Iure dolorem est enim inventore ut fuga. Dolores quo laborum ut ex non. Voluptas occaecati officiis est dolorum in reiciendis. Voluptatem ratione dolor sit ut consectetur.', 0, 'New', 0, 1, '2019-09-10 06:07:44', '1990-04-04 06:41:40'),
+(9, 'Swift, Pagac and Rohan', '2012-07-23', '1971-05-17', 'Ducimus et beatae aliquam incidunt aliquid a aut. Tempore soluta impedit dolor non debitis asperiores qui. Impedit officia sed ut rerum quae dolores. Culpa vero distinctio sapiente soluta. Exercitationem sed corporis ipsum pariatur aut. Ut id quaerat amet et quo. Repellendus rerum quibusdam animi quisquam qui ut aperiam. Minima delectus voluptas impedit odit distinctio reprehenderit consectetur. Et debitis illum aperiam. Molestias ducimus nobis libero est debitis voluptatibus. Quae consequatur dolores est voluptatem repellendus aut in. Itaque ea omnis dolores qui vitae qui iusto ab. Fuga dignissimos at eos maxime perspiciatis. Eum velit beatae aut hic eaque. Nihil facilis est possimus architecto. Et temporibus ea laudantium. Officia magni ut ducimus omnis. Nobis totam deserunt voluptas qui qui qui in dolores. Ullam ut aut ratione eaque debitis necessitatibus. Cum ut rem ipsum deleniti in aut. Ratione ullam aut consectetur voluptas vel sint et. Rerum doloremque quas aspernatur molestiae. Expedita nobis sit porro vel asperiores cupiditate. Doloremque explicabo eum quod. Provident voluptatem aut molestiae sunt autem. Rem qui reiciendis voluptatum eius. Dolorem labore error saepe consequatur delectus officiis perspiciatis. Reprehenderit ullam accusamus ut cumque et ut dignissimos. Officia facilis repellat accusantium autem nulla sint. Rerum non earum molestiae dolores deserunt et sit. Non voluptas iure tenetur voluptas quos dolores est molestiae. Aut dolor aliquid et libero id nesciunt quia et. Quia laboriosam vel deserunt odio blanditiis numquam deserunt. Minus maxime rerum qui unde.', 0, 'New', 0, 1, '2020-02-04 15:05:34', '1985-06-18 23:30:56'),
+(10, 'Brown, Kris and Gaylord', '1997-10-14', '2003-11-05', 'Ipsum est ut eaque eum cumque mollitia quisquam. Eos velit rem nam. Qui iure harum quaerat dignissimos ut quis. Harum rerum officiis omnis et eum. Vero eos rerum dignissimos earum expedita at. Consectetur consectetur voluptatem et eum ut similique. Odio est corporis nulla eos. Odio officia sint beatae unde debitis maiores cumque. Provident dolorum quasi culpa quia nostrum. Tempora sunt aut sed labore. Fuga a exercitationem et est aut. Voluptatem dolor repudiandae earum quasi et. Blanditiis impedit necessitatibus quod id distinctio magni. Vel eaque est exercitationem quo ea. Dolorem excepturi et pariatur aperiam sint excepturi. Atque minus rerum quia consequuntur et. Sint beatae ipsa omnis eos. Est id animi dicta. Quis ipsam similique pariatur omnis. Suscipit soluta eos natus aut laborum. Vero vitae neque ut aspernatur. Officiis rerum voluptate vel veniam voluptates dicta minus. Cum consequatur libero hic ipsam expedita neque laudantium. Repellendus aut et odit rerum culpa consequatur. Labore pariatur consequatur quis libero. Consequatur aut dolores voluptatem atque.', 0, 'New', 0, 1, '1990-12-21 00:39:16', '2018-11-24 00:42:32');
 
 -- --------------------------------------------------------
 
@@ -190,12 +204,26 @@ INSERT INTO `projects` (`project_id`, `ProjectName`, `start`, `End`, `ProjectDes
 CREATE TABLE `tasks` (
   `task_id` bigint(20) UNSIGNED NOT NULL,
   `TaskName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deadline` date NOT NULL,
+  `task_status` enum('New','On Hold','In Progress','Done') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'New',
+  `is_completed` tinyint(1) NOT NULL DEFAULT 0,
+  `Completion_percent` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `ProjectID` bigint(20) UNSIGNED NOT NULL,
   `AssignedTo` bigint(20) UNSIGNED NOT NULL,
   `AssignedBy` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tasks`
+--
+
+INSERT INTO `tasks` (`task_id`, `TaskName`, `deadline`, `task_status`, `is_completed`, `Completion_percent`, `ProjectID`, `AssignedTo`, `AssignedBy`, `created_at`, `updated_at`) VALUES
+(1, 'New Task', '2022-09-20', 'New', 0, 0, 1, 1, 1, '2022-09-15 18:21:46', '2022-09-15 18:21:46'),
+(2, 'Completed Task', '2022-09-23', 'Done', 1, 100, 4, 2, 1, '2022-09-15 18:24:35', '2022-09-15 18:24:35'),
+(3, 'On Hold Task', '2022-09-23', 'On Hold', 0, 10, 4, 3, 1, '2022-09-15 18:25:35', '2022-09-15 18:25:35'),
+(4, 'In Progress Task', '2022-09-23', 'In Progress', 0, 70, 4, 4, 1, '2022-09-15 18:25:35', '2022-09-15 18:25:35');
 
 -- --------------------------------------------------------
 
@@ -231,8 +259,8 @@ CREATE TABLE `teams` (
 --
 
 INSERT INTO `teams` (`team_id`, `teamName`, `teamLead`, `created_at`, `updated_at`) VALUES
-(6, 'Test', 3, '2022-09-08 12:43:02', '2022-09-08 12:43:02'),
-(7, 'Digital Marketing', 3, '2022-09-09 09:02:02', '2022-09-09 09:02:02');
+(1, 'Digital Marketing', 1, '2022-09-15 08:33:51', '2022-09-15 08:33:51'),
+(2, 'Medical Billing', 2, '2022-09-15 08:34:11', '2022-09-15 08:34:11');
 
 -- --------------------------------------------------------
 
@@ -256,32 +284,16 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `name`, `department`, `designation`, `email`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'Helena Crist', 'Hegmann-Altenwerth', 'Gislason Group', 'hgleason@example.net', '$2y$10$nADyN3bW99INTUcwjyBXXOEJwGlxubtGVzDhbW91wq5XZeWNb7ti6', '2007-03-07 22:43:47', '2021-06-13 00:58:34'),
-(2, 'Shakira Wilderman', 'Stamm, Hermann and Douglas', 'Kunze-Hartmann', 'jett44@example.org', '$2y$10$/qQLEd.2eDdqJlJt83g0neIY6EPC8s0/veuSUieTktywDrBUz9Vce', '1989-12-10 16:44:59', '2016-04-01 08:53:50'),
-(3, 'Adonis Rowe', 'Larson Group', 'Boyer, Kovacek and Schoen', 'bkeebler@example.com', '$2y$10$6HHYX6TLbX2ldq.mAJi0g.ERODx3dw7Jo4b.DlnWSNdQ9s1Dz0bjS', '2007-07-23 07:30:47', '2004-08-14 13:19:04'),
-(4, 'Simone Zulauf', 'Johnson, Block and Armstrong', 'Paucek Inc', 'danial18@example.com', '$2y$10$r18L5sxoVsimJSNy3cegRupu.omDjiw/Gd7NMrj/4GdvY3OBudACm', '2020-09-26 03:14:11', '2010-04-25 20:51:59'),
-(5, 'Ivy Moore', 'Rempel-Heaney', 'Murphy Inc', 'benjamin.smitham@example.net', '$2y$10$YxXQmR86zf.r/DHZo1h5BOdxRfxMlWsbI.J2j6CDeY3SGqJPXyMBC', '1976-02-01 18:02:40', '2014-07-10 23:32:49'),
-(6, 'Kaylin Ward', 'Turner-Jerde', 'Macejkovic LLC', 'cecilia32@example.net', '$2y$10$Y6f.pJS5Oq5HEP4Pw6gULuPEywuz3E6RMnirROQNdqX8SbRb/3oTi', '1988-05-06 00:53:46', '1996-01-09 17:29:58'),
-(7, 'Osborne Kuphal', 'Herman Inc', 'Schamberger-Mayert', 'jacklyn11@example.com', '$2y$10$7lyh92QFpRaemRDOZEk91u/rQ5MBoXaRGJ3sW8k/B/wuEBmLtv4qW', '1982-04-05 22:12:32', '1995-03-25 05:46:01'),
-(8, 'Mackenzie Romaguera', 'Hackett Inc', 'Jacobson Inc', 'ureichert@example.org', '$2y$10$84j4DDHfdddFhXzTrL4LoOhOvNYvNaXfsGqL0ZxaMDcVSHmtF.PZG', '1994-04-04 06:40:16', '1994-11-03 11:28:49'),
-(9, 'Madilyn Spinka', 'Volkman, Sanford and Murazik', 'Turner PLC', 'kirlin.dexter@example.com', '$2y$10$ri6VgSkRbGGU6gfBZBhFXOTr9no4ISu12jODe48i42GXjyZNBesPC', '2000-07-25 01:07:33', '1984-03-12 01:46:23'),
-(10, 'Kareem Pagac', 'Murphy, Tremblay and Bosco', 'Halvorson LLC', 'wilhelmine.larson@example.org', '$2y$10$5UVznl2cwAzJB5dQjJgUs.jOUzkDMg/wdEtntAlFUnhWacNsRCO1W', '1982-09-17 04:28:21', '2007-07-22 06:44:10');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_task_details`
---
-
-CREATE TABLE `user_task_details` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `is_completed` tinyint(1) NOT NULL DEFAULT 0,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'New',
-  `Completion_percent` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `TaskID` bigint(20) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(1, 'Kelley Larkin', 'Hackett Group', 'O\'Kon, Prosacco and Balistreri', 'alexie67@example.com', '$2y$10$QsbbsRoniWzT31yAqSyuk.ckvRRH837moJA49Ghb83VqqqBveEQc2', '1992-05-03 01:39:01', '1992-08-26 00:12:18'),
+(2, 'Kattie Bauch', 'Robel, Stanton and Conroy', 'Gaylord-Boyer', 'cgibson@example.org', '$2y$10$fmmH4V368CYmdq29lhX3q.24c7QMwmCF0hqKSxrjKS0V51.d7EK9y', '2019-05-13 18:31:13', '1978-03-24 17:44:07'),
+(3, 'Dr. Collin Wunsch II', 'Feest LLC', 'Rowe-Rempel', 'kprosacco@example.org', '$2y$10$64k0/dDfjxqtnPjjo9PCj.LYJ3FE/LIEI60O9iWEsOTQm2jcq3LIW', '2012-07-30 12:27:53', '1991-04-05 11:41:10'),
+(4, 'Ian Murazik', 'Mueller Group', 'Stiedemann Inc', 'rlehner@example.net', '$2y$10$5YmlwQWLT5tExxaSam0U2.9.U6wtpa8d.QkMJxjxOUD1zAFFs3/ye', '1970-04-15 14:06:52', '2010-04-20 00:20:18'),
+(5, 'Lindsay Daugherty', 'O\'Reilly Group', 'Kiehn-Yundt', 'stamm.gabriel@example.com', '$2y$10$4.QUSuYF5OExUf9iFXzJBOYd/1PzBijGmByNp2exCfiPW7Yv0fWCa', '1975-01-23 00:23:23', '1978-01-04 06:30:23'),
+(6, 'Chauncey Hackett V', 'Breitenberg, Schamberger and Eichmann', 'King Ltd', 'mosinski@example.org', '$2y$10$1RC4G4ldtY9EXPEHxKDoJuOtDwEcEfz7cgA8Hir0Zgu9IivlJEi9q', '2006-10-08 10:27:41', '2006-04-08 23:31:51'),
+(7, 'Tristian Kozey', 'Rolfson and Sons', 'Rolfson-Schoen', 'edamore@example.org', '$2y$10$n88hUVT924e301zLSHF03O7asJ8lLL3YP3Fqo7nf5uj2kPwMv4dLu', '2007-12-22 09:15:17', '2005-03-30 17:53:00'),
+(8, 'Newell Baumbach IV', 'Beer-Toy', 'Welch, Stroman and Larson', 'koch.koby@example.net', '$2y$10$fAcQqjNAwTGwSF/bQjMbfucuy9sUPwgJ.zxr75xMOtmwML7.gG12S', '1973-04-18 14:51:14', '1974-04-10 06:00:24'),
+(9, 'Rosario Fisher', 'Muller, Farrell and Bailey', 'Mohr and Sons', 'chase.jaskolski@example.org', '$2y$10$/iIb3KWJMwGubCirRpB.ROQM0NKoyzsbl/iGtvWEalrH37RwlJ/F6', '2005-04-21 16:14:44', '1988-06-28 19:38:34'),
+(10, 'Sammy Dach V', 'Heller and Sons', 'Erdman, Kessler and Wiza', 'israel.renner@example.net', '$2y$10$hvbZyaiLz.MAYVAqJIYfOuKp/oXjjGREt1Nerv.G5s3PV1VQEK6.e', '1971-04-07 21:53:07', '2013-04-23 02:15:40');
 
 -- --------------------------------------------------------
 
@@ -302,13 +314,14 @@ CREATE TABLE `user_team` (
 --
 
 INSERT INTO `user_team` (`id`, `teamID`, `userID`, `created_at`, `updated_at`) VALUES
-(1, 6, 4, NULL, NULL),
-(2, 6, 8, NULL, NULL),
-(3, 6, 9, NULL, NULL),
-(4, 7, 1, NULL, NULL),
-(5, 7, 2, NULL, NULL),
-(6, 7, 3, NULL, NULL),
-(8, 7, 5, NULL, NULL);
+(1, 1, 1, NULL, NULL),
+(2, 1, 2, NULL, NULL),
+(3, 1, 3, NULL, NULL),
+(4, 1, 4, NULL, NULL),
+(5, 2, 7, NULL, NULL),
+(6, 2, 8, NULL, NULL),
+(7, 2, 9, NULL, NULL),
+(8, 2, 10, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -385,13 +398,6 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
--- Indexes for table `user_task_details`
---
-ALTER TABLE `user_task_details`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_task_details_taskid_foreign` (`TaskID`);
-
---
 -- Indexes for table `user_team`
 --
 ALTER TABLE `user_team`
@@ -425,19 +431,19 @@ ALTER TABLE `managers`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `project_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `project_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `task_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `task_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `task_details`
@@ -449,19 +455,13 @@ ALTER TABLE `task_details`
 -- AUTO_INCREMENT for table `teams`
 --
 ALTER TABLE `teams`
-  MODIFY `team_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `team_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `user_task_details`
---
-ALTER TABLE `user_task_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_team`
@@ -497,13 +497,7 @@ ALTER TABLE `task_details`
 -- Constraints for table `teams`
 --
 ALTER TABLE `teams`
-  ADD CONSTRAINT `teams_teamlead_foreign` FOREIGN KEY (`teamLead`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
-
---
--- Constraints for table `user_task_details`
---
-ALTER TABLE `user_task_details`
-  ADD CONSTRAINT `user_task_details_taskid_foreign` FOREIGN KEY (`TaskID`) REFERENCES `tasks` (`task_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `teams_teamlead_foreign` FOREIGN KEY (`teamLead`) REFERENCES `managers` (`manager_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `user_team`

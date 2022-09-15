@@ -61,7 +61,78 @@
         </div>
         <!-- /Page Header -->
 
-
+        {{-- Task Count Overview --}}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-group m-b-30">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <span class="d-block">Total Tasks</span>
+                                </div>
+                               
+                            </div>
+                            <h3 class="mb-3 text-danger">{{$total}}</h3>
+                          
+                        </div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <span class="d-block">Completed</span>
+                                </div>
+                              
+                            </div>
+                            <h3 class="mb-3 text-success">{{$Completed}}</h3>
+                          
+                        </div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <span class="d-block">New</span>
+                                </div>
+                              
+                            </div>
+                            <h3 class="mb-3 text-primary">{{$New}}</h3>
+                           
+                        </div>
+                    </div>
+                
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <span class="d-block">In Progress</span>
+                                </div>
+                               
+                            </div>
+                            <h3 class="mb-3 text-info">{{$InProgress}}</h3>
+                            
+                        </div>
+                    </div> 
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <span class="d-block ">On Hold</span>
+                                </div>
+                               
+                            </div>
+                            <h3 class="mb-3" style="color: rgb(199, 132, 8);">{{$OnHold}}</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>	
+        </div>
+        {{-- Task Count Overview --}}
 
         <div class="row">
             <div class="col-sm-12">
@@ -185,7 +256,7 @@
                     var response = JSON.parse(response);
                     console.log(response);
                     $('#assigned_to').empty();
-                    $('#assigned_to').append(`<option value="0" disabled selected>Select Select Manager*</option>`);
+                    $('#assigned_to').append(`<option value="0" disabled selected>Assign To *</option>`);
                     response.forEach(element => {
                         $('#assigned_to').append(`<option value="${element['user_id']}">${element['name']}</option>`);
                     });

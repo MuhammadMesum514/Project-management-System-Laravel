@@ -95,6 +95,11 @@ Route::prefix('manager')->name('manager.')->group(function(){
             Route::view('/register','dashboard.manager.register')->name('register');
             Route::post('/create',[ManagerController::class,'create'])->name('create');
             Route::post('/check',[ManagerController::class,'check'])->name('check');
+
+            Route::fallback(function () {
+                Route::view('/login','dashboard.manager.login')->name('login');
+
+                });
        });
 
        Route::middleware(['auth:manager','PreventBackHistory'])->group(function(){
@@ -104,15 +109,23 @@ Route::prefix('manager')->name('manager.')->group(function(){
             Route::get('/managerproject',[ManagerProjectController::class,'index'])->name('managerproject');
             Route::get('/editmanagerproject/{id}',[ManagerProjectController::class,'edit'])->name('editmanagerproject');
             Route::post('/addproject',[ManagerProjectController::class,'createProject'])->name('addproject');
+            Route::post('/updateproject',[ManagerProjectController::class,'updateProject'])->name('updateproject');
             Route::post('/deleteproject',[ManagerProjectController::class,'deleteProject'])->name('deleteproject');
             
             // manager Tasks 
             Route::get('/managertasks/{projectId}',[ManagerTaskController::class,'index'])->name('managertasks');
+            // Route::post('/managertasks/{projectId}',['as'=>'showProjects','uses'=> 'ManagerTaskController@index'])->name('managertasks');
             
             // AJAX Routes
              Route::get('/ajaxTaskAssigned',[ManagerTaskController::class,'getAssignedTo'])->name('ajaxTaskAssigned');
         
             Route::post('logout',[ManagerController::class,'logout'])->name('logout');
+
+
+            Route::fallback(function() {
+                return redirect()->route('manager.home');
+            // Route::get('/home',[ManagerDashboardController::class,'index'])->name('home');
+            });
        });
 
 });

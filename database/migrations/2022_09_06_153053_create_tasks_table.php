@@ -17,6 +17,9 @@ class CreateTasksTable extends Migration
             $table->id('task_id');
             $table->string('TaskName');
             $table->date('deadline');
+            $table->enum('task_status',['New','On Hold','In Progress','Done'])->default('New');
+            $table->boolean('is_completed')->default(0);
+            $table->integer('Completion_percent')->unsigned()->default(0);
             $table->unsignedBigInteger('ProjectID');            
             $table->unsignedBigInteger('AssignedTo');            
             $table->unsignedBigInteger('AssignedBy');            

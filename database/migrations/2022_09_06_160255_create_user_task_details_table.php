@@ -13,15 +13,12 @@ class CreateUserTaskDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_task_details', function (Blueprint $table) {
-            $table->id();
-            $table->boolean('is_completed')->default(0);
-            $table->string('status')->default('New');
-            $table->integer('Completion_percent')->unsigned()->default(0);
-            $table->unsignedBigInteger('TaskID');            
-            $table->foreign('TaskID')->references('task_id')->on('tasks')->onDelete('cascade');
-            $table->timestamps();
-        });
+        // Schema::create('user_task_details', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->unsignedBigInteger('TaskID');            
+        //     $table->foreign('TaskID')->references('task_id')->on('tasks')->onDelete('cascade');
+        //     $table->timestamps();
+        // });
     }
 
     /**

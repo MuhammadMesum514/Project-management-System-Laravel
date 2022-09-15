@@ -9,11 +9,24 @@ use Session;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Project;
+use \Crypt;
 
 class ManagerTaskController extends Controller
 {
     public function index($projectId){
-        return view('dashboard.manager.ManagerTasks',compact('projectId'));
+        $projectId=Crypt::decrypt($projectId);
+        $total=0; $Completed=0; $New=0; $OnHold=0; $InProgress=0;
+        $taskCounts = DB::select('CALL Get_All_Task_Count_On_Status_Based_On_Project(?)',[$projectId]);
+        if($taskCounts){
+            $total = $taskCounts[0]->total?$taskCounts[0]->total:0;
+            $Completed = $taskCounts[0]->Completed?$taskCounts[0]->Completed:0;
+            $New = $taskCounts[0]->New?$taskCounts[0]->New:0;
+            $OnHold = $taskCounts[0]->OnHold?$taskCounts[0]->OnHold:0;
+            $InProgress = $taskCounts[0]->InProgress?$taskCounts[0]->InProgress:0;
+        }
+
+        $data=compact('total', 'Completed', 'New', 'OnHold', 'InProgress', 'projectId');
+        return view('dashboard.manager.ManagerTasks')->with($data);
     }
 
     //* Ajax for getting Assigned To

@@ -90,7 +90,14 @@
 									<button type="button" class="dropdown-item dlt_project" href="#" data-toggle="modal" data-target="#delete_project" value="{{$project->project_id}}"><i class="fa fa-trash m-r-5"></i>Delete</button>
                             </div>
                         </div>
-                        <h4 class="project-title" id="project_title" ><a href="{{ route('manager.managertasks', ['projectId' => $project->project_id])}}" data-projectname="{{$project->ProjectName}}"  >{{$project->ProjectName}}</a></h4>
+                        <h4 class="project-title" id="project_title" >
+                            
+                            {{-- <a class="dropdown-item" href="{{ route('manager.managertasks', ['projectId' => Crypt::encrypt($project->project_id)])}}"
+							onclick="event.preventDefault(); document.getElementById('View-Project-Details').submit();">{{$project->project_id}}</a>
+						<form action="{{ route('manager.managertasks', ['projectId' => Crypt::encrypt($project->project_id)])}}" id="View-Project-Details"  method="post">@csrf</form>
+                             --}}
+                            <a  href="{{ route('manager.managertasks', ['projectId' => Crypt::encrypt($project->project_id)])}}">{{$project->ProjectName}}</a>
+                        </h4>
                         <small class="block text-ellipsis m-b-15">
                             <span class="text-xs">12</span> <span class="text-muted">open tasks, </span>
                             <span class="text-xs">4</span> <span class="text-muted">tasks completed</span>
@@ -186,20 +193,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{route('manager.addproject')}}">
+                <form method="POST" action="{{route('manager.updateproject')}}">
                     @csrf
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Project Name</label>
-                                <input class="form-control" name="project_Name" type="text" id="edit_project_name">
+                                <input class="form-control" name="project_id" type="hidden" id="edit_project_id">
+                                <input class="form-control" name="project_Name" required type="text" id="edit_project_name">
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Progress</label>
-                                <input class="form-control" name="progress" type="number" id="edit_progress">
+                                <input class="form-control" name="progress" type="number" required id="edit_progress">
                             </div>
                         </div>
 
@@ -227,7 +235,7 @@
                             <div class="form-group">
                                 <label>Start Date</label>
                                 <div class="cal-icon">
-                                    <input class="form-control datetimepicker" name="project_StartDate" id="edit_project_start_date" type="text">
+                                    <input class="form-control datetimepicker" required name="project_StartDate" id="edit_project_start_date" type="text">
                                 </div>
                             </div>
                         </div>
@@ -235,7 +243,7 @@
                             <div class="form-group">
                                 <label>End Date</label>
                                 <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" id="edit_project_end_date" name="project_EndDate">
+                                    <input class="form-control datetimepicker" required type="text" id="edit_project_end_date" name="project_EndDate">
                                 </div>
                             </div>
                         </div>
@@ -243,7 +251,7 @@
                     
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea rows="4" class="form-control summernote" name="project_description" id="edit_project_description" placeholder="Enter Project Description here"></textarea>
+                        <textarea rows="4" class="form-control summernote" name="project_description" required id="edit_project_description" placeholder="Enter Project Description here"></textarea>
                     </div>
                     
                     <div class="submit-section">
@@ -289,13 +297,11 @@
 @section('importScripts')
 @endsection
 @section('script')
-
 <script>
     $(document).ready(function () {
         $(document).on('click','.dlt_project',function (e){ 
             e.preventDefault();
             var atn_id=$(this).val();
-
             $('#dlt-id').val(atn_id);
         });        
     });
@@ -305,12 +311,13 @@
         $(document).on('click','.edit-project',function (e){ 
             e.preventDefault();
             var project_id=$(this).val();
-
             $.ajax({
                 type: "GET",
                 url: "editmanagerproject/"+project_id,
                 success: function (response) {
-                    console.log(response.project.start);
+                    // console.log(response.project.start);
+                    $('#edit_project_id').val(project_id);
+                    $('#edit_project_name').val(response.project.ProjectName);
                     $('#edit_project_name').val(response.project.ProjectName);
                         var d= new Date(response.project.start);
                         var d1= new Date(response.project.End);
