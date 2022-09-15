@@ -60,6 +60,8 @@
         </div>
         <!-- /Page Header -->
         <div class="row staff-grid-row">
+        @if($teamMembers)
+            
             @foreach ($teamMembers as $member)
                 
             <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
@@ -74,6 +76,8 @@
                 </div>
             </div>
             @endforeach
+        @endif
+
         </div>
     </div>
     <!-- /Page Content -->

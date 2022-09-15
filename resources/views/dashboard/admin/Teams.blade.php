@@ -117,7 +117,7 @@
 											<div class="form-group">
 												<label>Team Lead <span class="text-danger">*</span></label>
 												<select class="select " id="teamLead" name="teamLead" required>
-													<option value="null" disabled selected>None</option>
+													<option value="" disabled selected>None</option>
 													{{-- <option class="selected disabled" value="">{{$employee->department}} - (Current)</option> --}}
 												</select>
 											</div>

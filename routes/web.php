@@ -109,6 +109,9 @@ Route::prefix('manager')->name('manager.')->group(function(){
             // manager Tasks 
             Route::get('/managertasks/{projectId}',[ManagerTaskController::class,'index'])->name('managertasks');
             
+            // AJAX Routes
+             Route::get('/ajaxTaskAssigned',[ManagerTaskController::class,'getAssignedTo'])->name('ajaxTaskAssigned');
+        
             Route::post('logout',[ManagerController::class,'logout'])->name('logout');
        });
 

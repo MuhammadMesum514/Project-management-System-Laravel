@@ -13,11 +13,16 @@ class ManagerDashboardController extends Controller
    public function index(Request $request){
     // dd("hello world");
       $teamId=DB::select('select team_id from teams where teams.TeamLead = ?', [Auth::user()->manager_id]);
-      $teamId=$teamId[0]->team_id;
-      if($teamId && !Session::get('ManagerTeamID')){
+      if($teamId!=null){
+         $teamId=$teamId[0]->team_id;
+         if(!Session::get('ManagerTeamID')){
             Session::put('ManagerTeamID', $teamId);
-      }
-      $teamMembers=DB::select('select users.name,users.department,users.designation from users inner join user_team on users.user_id=user_team.userID where user_team.teamID =?', [$teamId]);
+         }
+         $teamMembers=DB::select('select users.name,users.department,users.designation from users inner join user_team on users.user_id=user_team.userID where user_team.teamID =?', [$teamId]);
+         } else{
+            $teamMembers=[];
+         }
+         
       return view('dashboard.manager.dashboard',compact('teamMembers'));
    }
 }
