@@ -21,13 +21,11 @@ class ManagerProjectController extends Controller
 
     // * For creating new projects
     public function createProject(Request $request){
-           
         $projectInfo=Validator::make($request->all(),[
             'project_Name' => 'required',
             'project_StartDate' => 'required',
             'project_EndDate' => 'required',
             'project_description' => 'required|string',
-            
         ]);
 
         if ($projectInfo->fails()) {
@@ -59,8 +57,6 @@ class ManagerProjectController extends Controller
 
     //* for updating a project 
     public function updateProject(Request $request){
-            // dd($request->all());
-
             try{
                 if($request->get('completed')){
                     Project::where('project_id', $request->get('project_id'))

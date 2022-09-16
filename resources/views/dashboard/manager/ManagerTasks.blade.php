@@ -73,7 +73,7 @@
                                 </div>
                                
                             </div>
-                            <h3 class="mb-3 text-danger">{{$total}}</h3>
+                           <a id="total" class="getTasksfromCount" href="#"><h3 class="mb-3 text-danger">{{$total}}</h3></a>
                           
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                                 </div>
                               
                             </div>
-                            <h3 class="mb-3 text-success">{{$Completed}}</h3>
+                       <a id="Completed" class="getTasksfromCount"  href="#"><h3 class="mb-3 text-success">{{$Completed}}</h3></a>
                           
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                                 </div>
                               
                             </div>
-                            <h3 class="mb-3 text-primary">{{$New}}</h3>
+                           <a id="New" class="getTasksfromCount" href="#"><h3 class="mb-3 text-primary">{{$New}}</h3></a>
                            
                         </div>
                     </div>
@@ -112,7 +112,7 @@
                                 </div>
                                
                             </div>
-                            <h3 class="mb-3 text-info">{{$InProgress}}</h3>
+                       <a id="inProgress" class="getTasksfromCount" href="#"><h3 class="mb-3 text-info">{{$InProgress}}</h3></a>
                             
                         </div>
                     </div> 
@@ -125,39 +125,42 @@
                                 </div>
                                
                             </div>
-                            <h3 class="mb-3" style="color: rgb(199, 132, 8);">{{$OnHold}}</h3>
+                           <a id="onHold" class="getTasksfromCount" href="#"><h3 class="mb-3" style="color: rgb(199, 132, 8);">{{$OnHold}}</h3></a>
                             
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="taskProjectID" value="{{$projectId}}" name="taskProjectID"/>
             </div>	
         </div>
+        
         {{-- Task Count Overview --}}
-
         <div class="row">
             <div class="col-sm-12">
                 <div class="card mb-0">
                     <div class="card-body">
 
                         <div class="table-responsive">
-                            <table class="datatable table table-stripped mb-0">
+                            <table id="tasksTable" class="datatable table table-bordered mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Project Name</th>
-                                        <th>Assigned to</th>
+                                        <th class="d-none">Task id</th>
+                                        <th>Task Name</th>
                                         <th>Deadline</th>
                                         <th>Status</th>
                                         <th>Completion Percent</th>
+                                        <th>Assigned to</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    {{-- <tr>
                                         <td>Project Management</td>
                                         <td>Muhammad Mesum</td>
                                         <td>01/10/2022</td>
                                         <td>In Progress</td>
                                         <td>70%</td>
-                                    </tr>
+                                    </tr> --}}
 
                                 </tbody>
                             </table>
@@ -264,6 +267,31 @@
             });
         });
     });
-
+</script>
+<script>
+    $(document).ready(function() {
+        $('.getTasksfromCount').click(function (e) { 
+            e.preventDefault();
+            var id = $(this).attr('id');
+            var projectId = $('#taskProjectID').val();
+            var url = "{{ route('manager.ajaxGetTasks', ":id") }}";
+            url = url.replace(':id', id);
+            var table = $("#tasksTable tbody");
+            $.ajax({
+                type: "GET",
+                url: url,
+                data:{'projectId':projectId},
+                success: function (response){
+                    // $('#tasksTable').find('tbody').empty();
+                    var response = JSON.parse(response);                   
+                    table.empty();
+                    response.forEach(element => {
+                        
+                        table.append("<tr><td class='d-none'>"+element.task_id+"</td><td>"+element.TaskName+"</td>   <td>"+element.deadline+"</td><td>"+element.task_status+"</td><td>"+element.Completion_percent+"%"+"</td>   <td>"+element.name+"</td> <td class='text-right'><div class='dropdown dropdown-action'><a href='#' class='action-icon dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='material-icons'>more_vert</i></a><div class='dropdown-menu dropdown-menu-right'><a class='dropdown-item' href='#' data-toggle='modal' data-target='#edit_leave'><i class='fa fa-pencil m-r-5'></i> Edit</a><a class='dropdown-item' href='#' data-toggle='modal' data-target='#delete_approve' value="+element.task_id+"><i class='fa fa-trash-o m-r-5'></i> Delete</a></div></div></td></tr>");
+                    });
+                }
+            });
+        });
+    });
 </script>
 @endsection

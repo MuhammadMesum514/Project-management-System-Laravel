@@ -13,6 +13,8 @@ use \Crypt;
 
 class ManagerTaskController extends Controller
 {
+
+    
     public function index($projectId){
         $projectId=Crypt::decrypt($projectId);
         $total=0; $Completed=0; $New=0; $OnHold=0; $InProgress=0;
@@ -35,6 +37,60 @@ class ManagerTaskController extends Controller
             $teamMembers = DB::select('select user_id,name from users inner join user_team on users.user_id=user_team.userID where user_team.teamID=?', [Session::get('ManagerTeamID')]);
             return json_encode($teamMembers);
             }
+    }
+
+    // * GET AJAX tasks based on count
+    public function getTasks($id,Request $request){
+        
+        if($request->ajax()){
+            $taskProjectId=$request->get('projectId');
+            switch ($id) {
+                case 'total':
+                   return json_encode(DB::table('tasks')->leftJoin('users', 'users.user_id', '=','tasks.AssignedTo')
+                    ->select('tasks.task_id', 'tasks.TaskName','tasks.deadline', 'tasks.task_status','tasks.Completion_percent','users.name')
+                    ->where('tasks.ProjectID','=',$taskProjectId)
+                    ->get());
+                    break;
+                case 'New':
+                   return json_encode(DB::table('tasks')->leftJoin('users', 'users.user_id', '=','tasks.AssignedTo')
+                    ->select('tasks.task_id', 'tasks.TaskName','tasks.deadline', 'tasks.task_status','tasks.Completion_percent','users.name')
+                    ->where('tasks.ProjectID','=',$taskProjectId)
+                    ->where('task_status','=', "New")                  
+                    ->get());
+                    break;
+                
+                case 'Completed':
+                   return json_encode(DB::table('tasks')->leftJoin('users', 'users.user_id', '=','tasks.AssignedTo')
+                    ->select('tasks.task_id', 'tasks.TaskName','tasks.deadline', 'tasks.task_status','tasks.Completion_percent','users.name')
+                    ->where('tasks.ProjectID','=',$taskProjectId)
+                    ->where('task_status','=', "Done")
+                    ->get());
+                    break;
+                    
+                case 'inProgress':
+                   return json_encode(DB::table('tasks')->leftJoin('users', 'users.user_id', '=','tasks.AssignedTo')
+                    ->select('tasks.task_id', 'tasks.TaskName','tasks.deadline', 'tasks.task_status','tasks.Completion_percent','users.name')
+                    ->where('tasks.ProjectID','=',$taskProjectId)
+                    ->where('task_status','=', "In Progress")
+                    ->get());
+                    break;
+                    
+                case 'onHold':
+                   return json_encode(DB::table('tasks')->leftJoin('users', 'users.user_id', '=','tasks.AssignedTo')
+                    ->select('tasks.task_id', 'tasks.TaskName','tasks.deadline', 'tasks.task_status','tasks.Completion_percent','users.name')
+                    ->where('tasks.ProjectID','=',$taskProjectId)
+                    ->where('task_status','=', "On Hold")
+                    ->get());
+                    break;
+                
+                default:
+                return json_encode(DB::table('tasks')->leftJoin('users', 'users.user_id', '=','tasks.AssignedTo')
+                ->select('tasks.task_id', 'tasks.TaskName','tasks.deadline', 'tasks.task_status','tasks.Completion_percent','users.name')
+                ->where('tasks.ProjectID','=',$taskProjectId)
+                ->get());
+                    break;
+            }
+        }
     }
 
     public function createTask(){
