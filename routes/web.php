@@ -114,6 +114,10 @@ Route::prefix('manager')->name('manager.')->group(function(){
             
             // manager Tasks 
             Route::get('/managertasks/{projectId}',[ManagerTaskController::class,'index'])->name('managertasks');
+            Route::post('/managertasks/createnewtask',[ManagerTaskController::class,'createTask'])->name('createnewtask');
+            // Route::get('/managertasksdetails/{taskId}',[ManagerTaskController::class,'managertaskDetails'])->name('managertasksdetails');
+            Route::POST('/managertasksdetails',[ManagerTaskController::class,'managertaskDetails'])->name('managertasksdetails');
+            
             // Route::post('/managertasks/{projectId}',['as'=>'showProjects','uses'=> 'ManagerTaskController@index'])->name('managertasks');
             
             // AJAX Routes

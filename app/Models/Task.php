@@ -17,9 +17,18 @@ class Task extends Model
      */
     protected $fillable = [
         'TaskName',
+        'deadline',
+        'task_status',
+        'is_completed',
+        'Completion_percent',
         'ProjectID',
         'AssignedTo',
         'AssignedBy',
     ];
+
+    public function taskDetails()
+    {
+        return $this->hasOne('App\TaskDetails', 'TaskID');;
+    }
 
 }

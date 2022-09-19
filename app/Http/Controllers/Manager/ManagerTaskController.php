@@ -9,7 +9,10 @@ use Session;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Project;
+use App\Models\Task;
+use App\Models\TaskDetails;
 use \Crypt;
+use Auth;
 
 class ManagerTaskController extends Controller
 {
@@ -93,7 +96,61 @@ class ManagerTaskController extends Controller
         }
     }
 
-    public function createTask(){
-        dd("creating task");   
+    // * for creating a new task
+    public function createTask(Request $request){
+        // dd($request->all());
+        $taskInfo=Validator::make($request->all(),[
+            'task_name' => 'required',
+            'task_description' => 'required',
+            'task_deadline' => 'required',
+            'task_Priority' => 'required|string',
+            'assigned_to' => 'required',
+        ]);
+
+        if ($taskInfo->fails()) {
+            return \Redirect::back()->withInput()->withErrors($taskInfo);
+        }
+           
+        try {
+            $task =new Task();
+            $task->TaskName= $request->get('task_name'); 
+            $task->deadline=Carbon::createFromFormat('d/m/Y', $request->get('task_deadline'))->format('Y-m-d'); 
+            $task->task_status= "New"; 
+            $task->is_completed= 0; 
+            $task->Completion_percent= 0; 
+            $task->ProjectID= $request->get('projectId'); 
+            $task->AssignedTo= $request->get('assigned_to'); 
+            $task->AssignedBy= Auth::user()->manager_id; 
+            $task->save();
+            $taskId=$task->task_id;
+
+            // * for task details insertion
+            $taskDetails=[
+                'TaskDescription' =>  $request->get('task_description'),       
+                'taskPriority' =>  $request->get('task_Priority'),
+                'TaskID' => $taskId,
+                'created_at' => Carbon::now()->format('Y-m-d'),
+                'updated_at' => Carbon::now()->format('Y-m-d'),
+            ];
+            DB::table('task_details')->insert($taskDetails);
+            return redirect()->back()->with('status',"New task created Successfully");
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error',`failed to create new record $th`);
+        }
+        
+    }
+
+    //  * for viewing task details 
+
+    // public function managertaskDetails($taskId,Request $request){
+    //     if ($request->ajax()) {
+    //         # code...
+    //         return view('dashboard.manager.home');
+    //     }
+    // }
+    public function managertaskDetails(Request $request){
+        $taskId=$request->get('task_details_id');
+        $taskDetails=DB::select('select * from tasks inner join task_details on tasks.task_id=task_details.TaskID  where tasks.task_id=?', [$taskId]);
+        dd($taskDetails);
     }
 }
