@@ -115,6 +115,7 @@ Route::prefix('manager')->name('manager.')->group(function(){
             // manager Tasks 
             Route::get('/managertasks/{projectId}',[ManagerTaskController::class,'index'])->name('managertasks');
             Route::post('/managertasks/createnewtask',[ManagerTaskController::class,'createTask'])->name('createnewtask');
+            Route::post('/managertasks/managerUpdateTask',[ManagerTaskController::class,'updateTask'])->name('managerUpdateTask');
             // Route::get('/managertasksdetails/{taskId}',[ManagerTaskController::class,'managertaskDetails'])->name('managertasksdetails');
             Route::POST('/managertasksdetails',[ManagerTaskController::class,'managertaskDetails'])->name('managertasksdetails');
             
@@ -123,6 +124,7 @@ Route::prefix('manager')->name('manager.')->group(function(){
             // AJAX Routes
              Route::get('/ajaxTaskAssigned',[ManagerTaskController::class,'getAssignedTo'])->name('ajaxTaskAssigned');
              Route::get('/ajaxGetTasks/{id}',[ManagerTaskController::class,'getTasks'])->name('ajaxGetTasks');
+             Route::get('/editTaskAjax/{id}',[ManagerTaskController::class,'editTasks'])->name('editTaskAjax');
         
             Route::post('logout',[ManagerController::class,'logout'])->name('logout');
 
