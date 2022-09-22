@@ -83,6 +83,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         // AJAX Routes
         Route::get('/ajaxTeamLead',[AdminTeamsController::class,'teams'])->name('ajaxTeamLead');
         Route::get('/ajaxTeamMembers',[AdminTeamsController::class,'getTeamMembers'])->name('ajaxTeamMembers');
+        Route::get('/getAllTasksOfProject/{status}',[AdminTeamsController::class,'getAllTasksOfProject'])->name('getAllTasksOfProject');
         
     });
 
@@ -118,7 +119,8 @@ Route::prefix('manager')->name('manager.')->group(function(){
             Route::post('/managertasks/managerUpdateTask',[ManagerTaskController::class,'updateTask'])->name('managerUpdateTask');
             Route::post('/managertasks/managerDeleteTask/{id}',[ManagerTaskController::class,'deleteTask'])->name('managerDeleteTask');
             // Route::get('/managertasksdetails/{taskId}',[ManagerTaskController::class,'managertaskDetails'])->name('managertasksdetails');
-            Route::POST('/managertasksdetails',[ManagerTaskController::class,'managertaskDetails'])->name('managertasksdetails');
+            Route::any('/managertasksdetails',[ManagerTaskController::class,'managertaskDetails'])->name('managertasksdetails');
+            Route::POST('/managertasksdetails/markAsComplete/{completion_flag}',[ManagerTaskController::class,'markAsComplete'])->name('markAsComplete');
             
             // Route::post('/managertasks/{projectId}',['as'=>'showProjects','uses'=> 'ManagerTaskController@index'])->name('managertasks');
             

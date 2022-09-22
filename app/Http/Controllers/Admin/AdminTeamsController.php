@@ -45,4 +45,32 @@ class AdminTeamsController extends Controller
         }
 
     }
+
+    public function getAllTasksOfProject($status='All', Request $request){
+        $projectId=$request->get('hiddenProjectId');
+        // dd($projectId);
+        if($request->ajax()){
+            switch ($status) {
+                case 'Pending':
+                    $taskList=DB::select('select task_id,TaskName from tasks where tasks.ProjectID = ? and tasks.task_status!="Done"', [$projectId]);
+                    
+                    break;
+
+                case 'Done':
+                    $taskList=DB::select('select task_id,TaskName from tasks where tasks.ProjectID = ? and tasks.task_status="Done"', [$projectId]);
+                    break;
+                    
+                case 'All':
+                    $taskList=DB::select('select task_id,TaskName from tasks where tasks.ProjectID = ?', [$projectId]);
+                    break;
+                    
+                    default:
+                    $taskList=DB::select('select task_id,TaskName from tasks where tasks.ProjectID = ?', [$projectId]);
+                    // $taskList=DB::select('select task_id,TaskName from tasks where tasks.ProjectID = ? and tasks.task_status="Done"', [$projectId]);
+                    break;
+            }
+            return json_encode($taskList);
+        }
+
+    }
 }

@@ -131,7 +131,12 @@
 		  
 	  {{-- 	Lazy load CDN --}}
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js" integrity="sha512-jNDtFf7qgU0eH/+Z42FG4fw3w7DM/9zbgNPe3wfJlCylVDTT3IgKW5r92Vy9IHa6U50vyMz5gRByIu4YIXFtaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+	  {{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> --}}
+	  {{-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> --}}
+	  
+			
+	<!-- Task JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/task.js/0.0.7/task.js" integrity="sha512-bFCVo7cmrzbK9Cg/UJ+noWNW6KcvTBA98E6nxaJRp9Oj+LHdFDp5TRvunaEbu3doRSk3Ft1jHPnJJhlrk8Sr8Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	  <!-- Custom JS -->
 	  <script src="{{ URL::to('assets/js/app.js') }}"></script>
 	  @yield('importScripts');

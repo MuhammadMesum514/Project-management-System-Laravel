@@ -220,8 +220,8 @@ class ManagerTaskController extends Controller
         }
     }
 
+    // * for deleting a task
     public function deleteTask($task_id,Request $request){
-        
         if ($request->ajax()) {
             $editTask=Task::find($task_id);
             $editTask->delete();
@@ -230,7 +230,6 @@ class ManagerTaskController extends Controller
             // return redirect()->route('manager.managertasks');
             # code...
         }
-        dd("deleting request");
     }
     //  * for viewing task details 
     public function managertaskDetails(Request $request){
@@ -245,5 +244,29 @@ class ManagerTaskController extends Controller
             return view('dashboard.manager.managerTaskDetails',compact('taskDetails'));
     }
 
+
+    // * for marking a task as completed on task details page
+    public function markAsComplete($completion_flag,Request $request){
+        if($request->ajax()){
+            $hiddenTaskDetailId=$request->get('hiddenTaskDetailId');
+            $updateTask=Task::find($hiddenTaskDetailId);
+            if($completion_flag){
+                $updateTask->is_completed=1;
+                $updateTask->task_status="Done";
+                $updateTask->Completion_percent=100;
+                $updateTask->updated_at=Carbon::now()->format('Y-m-d');
+                $updateTask->save();
+            }
+            else{
+                $updateTask->is_completed=0;
+                $updateTask->task_status="In Progress";
+                $updateTask->Completion_percent=50;
+                $updateTask->updated_at=Carbon::now()->format('Y-m-d');
+                $updateTask->save();
+            }
+            $message = array('message' => 'Success!', 'title' => 'Deleted');
+            return response()->json($message);
+        }
+    }
     
 }
