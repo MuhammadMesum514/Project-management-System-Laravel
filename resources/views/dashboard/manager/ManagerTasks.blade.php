@@ -349,6 +349,7 @@
 @section('importScripts')
 @endsection
 @section('script')
+{{-- Ajax for fetching team members data for creating and assigning new task  --}}
 <script>
     $(document).ready(function() {
         $('#create-new-task').on('click', function() {
@@ -367,14 +368,10 @@
                 }
             });
         });
-        
-        
-        
-        
-        
-        
     });
 </script>
+
+{{-- Ajax for showing data in table based on task Count --}}
 <script>
     $(document).ready(function() {
         $('.getTasksfromCount').click(function (e) { 
@@ -394,7 +391,7 @@
                     table.empty();
                     response.forEach(element => {
                         // table.append("<tr><td class='d-none'>"+element.task_id+"</td><td><a class='task-details' value='"+element.task_id+"' href='{{ route('manager.managertasksdetails', ['taskId' => Crypt::encrypt("+element.task_id+")])}}' >"+element.TaskName+"</a></td>   <td>"+element.deadline+"</td><td>"+element.task_status+"</td><td>"+element.Completion_percent+"%"+"</td>   <td>"+element.name+"</td> <td class='text-right'><div class='dropdown dropdown-action'><a href='#' class='action-icon dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='material-icons'>more_vert</i></a><div class='dropdown-menu dropdown-menu-right'><a class='dropdown-item' href='#' data-toggle='modal' data-target='#edit_leave'><i class='fa fa-pencil m-r-5'></i> Edit</a><a class='dropdown-item' href='#' data-toggle='modal' data-target='#delete_approve' value="+element.task_id+"><i class='fa fa-trash-o m-r-5'></i> Delete</a></div></div></td></tr>");
-                        table.append("<tr><td class='d-none'>"+element.task_id+"</td><td><a onclick='submitTaskDetailsForm("+element.task_id+")' class='task-details' value='"+element.task_id+"' href='#' >"+element.TaskName+"</a></td>   <td>"+element.deadline+"</td><td>"+element.task_status+"</td><td>"+element.Completion_percent+"%"+"</td>   <td>"+element.name+"</td> <td class='text-right'><div class='dropdown dropdown-action'><a href='#' class='action-icon dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='material-icons'>more_vert</i></a><div class='dropdown-menu dropdown-menu-right'><a   class='dropdown-item' onclick='editAjax("+element.task_id+")' type='button' href='#' data-toggle='modal' id='edit-task-btn' data-target='#edit_task' value='"+element.task_id+"' ><i class='fa fa-pencil m-r-5'></i> Edit</a><a class='dropdown-item' href='#' data-toggle='modal' data-target='#delete_approve' value="+element.task_id+"><i class='fa fa-trash-o m-r-5'></i> Delete</a></div></div></td></tr>");
+                        table.append("<tr><td class='d-none'>"+element.task_id+"</td><td><a onclick='submitTaskDetailsForm("+element.task_id+")' class='task-details' value='"+element.task_id+"' href='#' >"+element.TaskName+"</a></td>   <td>"+element.deadline+"</td><td>"+element.task_status+"</td><td>"+element.Completion_percent+"%"+"</td>   <td>"+element.name+"</td> <td class='text-right'><div class='dropdown dropdown-action'><a href='#' class='action-icon dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='material-icons'>more_vert</i></a><div class='dropdown-menu dropdown-menu-right'><a   class='dropdown-item' onclick='editAjax("+element.task_id+")' type='button' href='#' data-toggle='modal' id='edit-task-btn' data-target='#edit_task' value='"+element.task_id+"' ><i class='fa fa-pencil m-r-5'></i> Edit</a><a class='dropdown-item' href='#' data-toggle='modal' onclick=deleteTaskAjax("+element.task_id+") data-target='#delete_approve'><i class='fa fa-trash-o m-r-5'></i> Delete</a></div></div></td></tr>");
                     });
                 }
             });
@@ -406,7 +403,6 @@
     function editAjax(task_id){
         var url = "{{ route('manager.editTaskAjax', ":id") }}";
         url = url.replace(':id', task_id);
-        console.log(task_id);
         $.ajax({
             type: "GET",
             url: url,
@@ -452,6 +448,7 @@
     }
    
 </script>
+{{-- Task details form submission --}}
 <script>
     function submitTaskDetailsForm(id){
         $('#taskDetailsId').val(id);
@@ -459,6 +456,23 @@
     }
 </script>
 
+{{-- Ajax for deleting a task --}}
+<script>
+function deleteTaskAjax(task_id){
+    var url = "{{ route('manager.managerDeleteTask', ":id") }}";
+        url = url.replace(':id', task_id);
+        $.ajax({
+                headers: {
+                'X-CSRF-TOKEN': "{{csrf_token()}}",
+                },
+                type: 'POST'
+                , url: url
+                , success: function(response) {
+                    window.location.reload();
+                }
+            });
+}
+</script>
 {{-- Script for getting team members on ajax edit --}}
 <script>
  function getTeamMembersonEdit(){

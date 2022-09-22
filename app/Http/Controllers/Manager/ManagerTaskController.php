@@ -181,40 +181,68 @@ class ManagerTaskController extends Controller
             $editTaskStatus = $request->get('edit_task_status')?$request->get('edit_task_status'):$request->get('hiddenEditStatus');
             $editAssignedTo = $request->get('edit_assigned_to')?$request->get('edit_assigned_to'):$request->get('hiddenEditAssignedTo');
             $taskId=$request->get('edit_task_id');
-
+                // dd($taskId);
             $completion_percent=$request->get('edit_completed')==1?'100':$request->get('edit_completion_Percent');
             if($completion_percent==100){$editTaskStatus ='Done';}
             try {
                 // * for task details insertion
-            $editTask=[
-                'TaskName' =>  $request->get('edit_taskname'),       
-                'deadline' =>  Carbon::createFromFormat('d/m/Y', $request->get('edit_task_deadline'))->format('Y-m-d'),
-                'task_status' => $editTaskStatus,
-                'is_completed' => $request->get('edit_completed'),
-                'Completion_percent' => $completion_percent,
-                'AssignedTo ' => $editAssignedTo,
-                'updated_at' => Carbon::now()->format('Y-m-d'),
-            ];
-            DB::table('tasks')->where('task_id','=',$taskId)->update($editTask); 
+            // $editTask=[
+            //     'TaskName' =>  $request->get('edit_taskname'),       
+            //     'deadline' =>  Carbon::createFromFormat('d/m/Y', $request->get('edit_task_deadline'))->format('Y-m-d'),
+            //     'task_status' => $editTaskStatus,
+            //     'is_completed' => $request->get('edit_completed'),
+            //     'Completion_percent' => $completion_percent,
+            //     'AssignedTo ' => $editAssignedTo,
+            //     'updated_at' => Carbon::now()->format('Y-m-d'),
+            // ];
+            $editTask=Task::find($taskId);
+            $editTask->TaskName = $request->get('edit_taskname');
+            $editTask->deadline = Carbon::createFromFormat('d/m/Y', $request->get('edit_task_deadline'))->format('Y-m-d');
+            $editTask->task_status = $editTaskStatus;
+            $editTask->is_completed = $request->get('edit_completed');
+            $editTask->Completion_percent = $completion_percent;
+            $editTask->AssignedTo = $editAssignedTo;
+            $editTask->updated_at = Carbon::now()->format('Y-m-d');
+            $editTask->save();
+            // DB::table('tasks')->where('task_id',$taskId)->update($editTask); 
             $editTaskDetailsInfo=[
                 'TaskDescription' =>  $request->get('edit_task_description'),       
                 'taskPriority' =>  $editTaskPriority,
                 'TaskID' => $taskId,
                 'updated_at' => Carbon::now()->format('Y-m-d'),
             ];
-            DB::table('task_details')->update($taskDetails);
+            DB::table('task_details')->where('TaskID',$taskId)->update($editTaskDetailsInfo);
 
-            return redirect()->back()->with('status',"New task created Successfully");
+            return redirect()->back()->with('status',"Updated Task Successfully");
             } catch (\Throwable $th) {
                 return redirect()->back()->with('error',`failed to create new record $th`);
             }
         }
     }
+
+    public function deleteTask($task_id,Request $request){
+        
+        if ($request->ajax()) {
+            $editTask=Task::find($task_id);
+            $editTask->delete();
+            $message = array('message' => 'Success!', 'title' => 'Deleted');
+            return response()->json($message);
+            // return redirect()->route('manager.managertasks');
+            # code...
+        }
+        dd("deleting request");
+    }
     //  * for viewing task details 
     public function managertaskDetails(Request $request){
         $taskId=$request->get('task_details_id');
-        $taskDetails=DB::select('select * from tasks inner join task_details on tasks.task_id=task_details.TaskID  where tasks.task_id=?', [$taskId]);
-        dd($taskDetails);
+        $taskDetails= DB::table('tasks')
+            ->leftJoin('task_details', 'tasks.task_id', '=', 'task_details.TaskID')
+            ->Join('users', 'tasks.AssignedTo', '=', 'users.user_id')
+            ->where('tasks.task_id','=',$taskId)
+            ->select(['tasks.*','TaskDescription','taskPriority','name'])
+            ->get();
+            // dd($taskDetails);
+            return view('dashboard.manager.managerTaskDetails',compact('taskDetails'));
     }
 
     

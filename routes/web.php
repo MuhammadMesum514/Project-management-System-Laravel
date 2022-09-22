@@ -116,6 +116,7 @@ Route::prefix('manager')->name('manager.')->group(function(){
             Route::get('/managertasks/{projectId}',[ManagerTaskController::class,'index'])->name('managertasks');
             Route::post('/managertasks/createnewtask',[ManagerTaskController::class,'createTask'])->name('createnewtask');
             Route::post('/managertasks/managerUpdateTask',[ManagerTaskController::class,'updateTask'])->name('managerUpdateTask');
+            Route::post('/managertasks/managerDeleteTask/{id}',[ManagerTaskController::class,'deleteTask'])->name('managerDeleteTask');
             // Route::get('/managertasksdetails/{taskId}',[ManagerTaskController::class,'managertaskDetails'])->name('managertasksdetails');
             Route::POST('/managertasksdetails',[ManagerTaskController::class,'managertaskDetails'])->name('managertasksdetails');
             
