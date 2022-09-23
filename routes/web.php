@@ -6,13 +6,14 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminTeamsController;
 use App\Http\Controllers\Admin\AdminProjectController;
+use App\Http\Controllers\Admin\AdminTaskController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\Manager\ManagerController;
 use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\Manager\ManagerProjectController;
 use App\Http\Controllers\Manager\ManagerTaskController;
-use App\Http\Controllers\User\userCalendar;
-use App\Http\Controllers\User\followUpForms;
+use App\Http\Controllers\User\userDashboardController;
+use App\Http\Controllers\User\userProjectController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,13 +49,18 @@ Route::prefix('user')->name('user.')->group(function(){
     });
 
     Route::middleware(['auth:web','PreventBackHistory'])->group(function(){
-          Route::get('/home',[userCalendar::class,'index'])->name('home');
-          Route::post('/fullcalenderAjax',[userCalendar::class,'ajax'])->name('fullcalenderAjax');
+          Route::get('/home',[userDashboardController::class,'index'])->name('home');
+        //   Route::post('/fullcalenderAjax',[userDashboardController::class,'ajax'])->name('fullcalenderAjax');
 
-          Route::get('/followupform',[followUpForms::class,'showNewForm'])->name('followupform');
-          //   Route::post('/logout',[userCalendar::class,'index'])->name('logout');
+            // * user Project routes
+          Route::get('/getProjects',[userProjectController::class,'getProjects'])->name('getProjects');
+          Route::get('/userprojectdetails/{projectId}',[userProjectController::class,'userProjectDetails'])->name('userProjectDetails');
+          
+        // * User Ajax routes
+        Route::get('/ajaxGetUserTasks/{id}',[userProjectController::class,'ajaxGetUserTasks'])->name('ajaxGetUserTasks');
+
           Route::post('/logout',[UserController::class,'logout'])->name('logout');
-          Route::get('/add-new',[UserController::class,'add'])->name('add');
+        //   Route::get('/add-new',[UserController::class,'add'])->name('add');
     });
 
 });
@@ -71,16 +77,19 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/home',[AdminDashboardController::class,'index'])->name('home');
         Route::post('/logout',[AdminController::class,'logout'])->name('logout');
         
-        // Team Routes;
+        // Admin Team Routes;
         Route::get('/teams',[AdminTeamsController::class,'teams'])->name('teams');
         Route::post('/addteam',[AdminTeamsController::class,'createTeam'])->name('addteam');
         Route::post('/deleteteam',[AdminTeamsController::class,'deleteTeam'])->name('deleteteam');
         
-        // Project Routes
-        Route::get('/project/{id}',[AdminProjectController::class,'index'])->name('adminProjects');
+        // Admin Project Routes
+        Route::get('/allProjects',[AdminProjectController::class,'index'])->name('allProjects');
+        Route::get('/project/{id}',[AdminProjectController::class,'teamProjects'])->name('adminProjects');
         Route::get('/project/{teamId}/details/{projectId}',[AdminProjectController::class,'projectDetails'])->name('projectDetails');
         
-        // AJAX Routes
+        Route::any('/admintasksdetails',[AdminTaskController::class,'getAdminTaskDetails'])->name('admintasksdetails');
+
+        // Admin AJAX Routes
         Route::get('/ajaxTeamLead',[AdminTeamsController::class,'teams'])->name('ajaxTeamLead');
         Route::get('/ajaxTeamMembers',[AdminTeamsController::class,'getTeamMembers'])->name('ajaxTeamMembers');
         Route::get('/getAllTasksOfProject/{status}',[AdminTeamsController::class,'getAllTasksOfProject'])->name('getAllTasksOfProject');

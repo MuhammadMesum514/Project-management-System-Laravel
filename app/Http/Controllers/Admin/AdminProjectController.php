@@ -9,11 +9,17 @@ use App\Models\Project;
 use App\Models\Team;
 class AdminProjectController extends Controller
 {
-    public function index($id){
+    // * for getting all projects
+    public function index(){
+        $projects=DB::select('select project_id as project_id, ProjectName,ProjectDescription,End,progress,TeamID from projects');
+        return view('dashboard.admin.adminAllProjects',compact('projects'));
+    }
+    // * for getting projects base on Team ID
+    public function teamProjects($id){
         $projects=DB::select('select project_id as project_id, ProjectName,ProjectDescription,End,progress from projects WHERE projects.TeamID = ?', [$id]);
         return view('dashboard.admin.teamProjects',compact('projects','id'));
     }
-
+    
     public function projectDetails($teamId,$projectId){
         $projects=DB::select('select * from projects WHERE projects.project_id = ?', [$projectId]);
         $TeamMembers=DB::select('select users.name as username from users inner join user_team on user_team.userID=users.user_id where user_team.teamID = ?', [$teamId]);

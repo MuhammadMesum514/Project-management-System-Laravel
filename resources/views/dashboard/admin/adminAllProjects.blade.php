@@ -48,7 +48,7 @@
 
 
     <!-- Page Content -->
-<div class="content container-fluid">
+    <div class="content container-fluid">
         @php
         function TrimDescription($text){
         $max_length = 100;
@@ -65,10 +65,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Projects</h3>
+                    <h3 class="page-title"> All Projects</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Projects</li>
+                        <li class="breadcrumb-item active">All Projects</li>
                     </ul>
                 </div>
             </div>
@@ -90,11 +90,11 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                             </div>
                         </div>
-                        <h4 class="project-title"><a href="{{ route('admin.projectDetails', ['teamId' => $id ,'projectId' => $project->project_id])}}">{{$project->ProjectName}}</a></h4>
-                        <small class="block text-ellipsis m-b-15">
+                        <h4 class="project-title"><a href="{{ route('admin.projectDetails', ['teamId' => $project->TeamID ,'projectId' => $project->project_id])}}">{{$project->ProjectName}}</a></h4>
+                        {{-- <small class="block text-ellipsis m-b-15">
                             <span class="text-xs">12</span> <span class="text-muted">open tasks, </span>
                             <span class="text-xs">4</span> <span class="text-muted">tasks completed</span>
-                        </small>
+                        </small> --}}
                         <p class="project_description">{{TrimDescription($project->ProjectDescription)}}
                         </p>
                         <div class="pro-deadline m-b-15">
@@ -123,30 +123,4 @@
 @section('importScripts')
 @endsection
 @section('script')
-{{-- AJAX REQUEST FOR SHIFT SELCTION --}}
-{{-- <script>
-    $(document).ready(function() {
-
-        $('#addTeam').on('click', function() {
-            // let shift = $(this).val();
-            $('#teamLead').empty();
-            $('#teamLead').append(`<option value="0" disabled selected>Processing...</option>`);
-            $.ajax({
-                type: 'GET'
-                , url: "ajaxTeamLead"
-                , success: function(response) {
-					// console.log(response);
-                    var response = JSON.parse(response);
-                    // console.log(response);
-                    $('#teamLead').empty();
-                    $('#teamLead').append(`<option value="0" disabled selected>Select Select Manager*</option>`);
-                    response.forEach(element => {
-                        $('#teamLead').append(`<option value="${element['manager_id']}">${element['name']}</option>`);
-                    });
-                }
-            });
-        });
-    });
-
-</script> --}}
 @endsection

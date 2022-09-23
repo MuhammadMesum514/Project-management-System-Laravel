@@ -1,18 +1,19 @@
 {{-- it will be dashboard page for user --}}
-@extends('layouts.managerBaseLayout.master')
+@extends('layouts.userBaseLayout.master')
 
 @section('css')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" /> --}}
 @endsection
 
 @section('header')
-@include('layouts.managerBaseLayout.header')
+@include('layouts.userBaseLayout.header')
 @endsection
 
 
 @section('sidebar')
-@include('layouts.managerBaseLayout.sidebar')
+@include('layouts.userBaseLayout.sidebar')
 @endsection
 
 @section('content')
@@ -132,20 +133,17 @@
                 <input type="hidden" id="taskProjectID" value="{{$projectId}}" name="taskProjectID"/>
             </div>	
         </div>
-        
         {{-- Task Count Overview --}}
+
+        {{-- submit task ID to get task Details  --}}
+        <form id="getTaskDetails" method="POST" action="{{ url('manager.managertasksdetails') }}">
+            @csrf
+            <input type="hidden" id="taskDetailsId" name="task_details_id">
+        </form>
+        {{-- submit task ID to get task Details  --}}
+
         <div class="row">
             <div class="col-sm-12">
-                <div class="card mb-0">
-                    <div class="card-body">
-                        
-                        {{-- submit task ID to get task Details  --}}
-                        <form id="getTaskDetails" method="POST" action="{{ route('manager.managertasksdetails') }}">
-                        @csrf
-                        <input type="hidden" id="taskDetailsId" name="task_details_id">
-                        </form>
-
-                        
                         <div class="table-responsive">
                             <table id="tasksTable" class="datatable table table-bordered mb-0">
                                 <thead>
@@ -160,94 +158,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- <tr>
-                                        <td>Project Management</td>
-                                        <td>Muhammad Mesum</td>
-                                        <td>01/10/2022</td>
-                                        <td>In Progress</td>
-                                        <td>70%</td>
-                                    </tr> --}}
-
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
+                   
             </div>
         </div>
-
+        
     </div>
     <!-- /Page Content -->
-    <!-- Create Task Modal -->
-    <div id="create_task" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create task</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{route('manager.createnewtask')}}">
-                        @csrf
-                        <input class="form-control" name="projectId" value="{{$projectId}}" type="hidden">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Task Name</label>
-                                    <input class="form-control" name="task_name" type="text" placeholder="Task Name" required>
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div class="form-group">
-                            <label>Task Description</label>
-                            <textarea rows="4" class="form-control summernote" name="task_description" required placeholder="Enter task Description here"></textarea>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Deadline</label>
-                                    <div class="cal-icon">
-                                        <input class="form-control datetimepicker" name="task_deadline" required type="text">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Task Priority</label>
-                                    <select class="form-control select" name="task_Priority" required>
-                                        <option disabled="disabled" value="">Select</option>
-                                        <option value="High">High</option>
-                                        <option value="Normal">Normal</option>
-                                        <option Value="Low">Low</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Assigned to <span class="text-danger">*</span></label>
-                                    <select class="select " id="assigned_to" name="assigned_to" required>
-                                        <option value="" disabled selected>None</option>
-                                        {{-- <option class="selected disabled" value="">{{$employee->department}} - (Current)</option> --}}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="submit-section">
-                            <button class="btn btn-primary submit-btn">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Create Task Modal -->
-
-
         <!-- Edit Task Modal -->
         <div id="edit_task" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -345,42 +264,22 @@
         </div>
         <!-- /Edit Task Modal -->
 </div>
-
 <!-- /Page Wrapper -->
+
 @endsection
 @section('importScripts')
 @endsection
 @section('script')
-{{-- Ajax for fetching team members data for creating and assigning new task  --}}
-<script>
-    $(document).ready(function() {
-        $('#create-new-task').on('click', function() {
-            $('#assigned_to').empty();
-            $('#assigned_to').append(`<option value="0" disabled selected>Processing...</option>`);
-            $.ajax({
-                type: 'GET'
-                , url: "{{ route('manager.ajaxTaskAssigned') }}"
-                , success: function(response) {
-                    var response = JSON.parse(response);
-                    $('#assigned_to').empty();
-                    $('#assigned_to').append(`<option value="0" disabled selected>Assign To *</option>`);
-                    response.forEach(element => {
-                        $('#assigned_to').append(`<option value="${element['user_id']}">${element['name']}</option>`);
-                    });
-                }
-            });
-        });
-    });
-</script>
-
 {{-- Ajax for showing data in table based on task Count --}}
 <script>
     $(document).ready(function() {
-        $('.getTasksfromCount').click(function (e) { 
+        $('.getTasksfromCount').click(function (e) {
+
             e.preventDefault();
             var id = $(this).attr('id');
+            console.log(id);
             var projectId = $('#taskProjectID').val();
-            var url = "{{ route('manager.ajaxGetTasks', ":id") }}";
+            var url = "{{ route('user.ajaxGetUserTasks', ":id") }}";
             url = url.replace(':id', id);
             var table = $("#tasksTable tbody");
             $.ajax({
@@ -392,104 +291,11 @@
                     var response = JSON.parse(response);                   
                     table.empty();
                     response.forEach(element => {
-                        // table.append("<tr><td class='d-none'>"+element.task_id+"</td><td><a class='task-details' value='"+element.task_id+"' href='{{ route('manager.managertasksdetails', ['taskId' => Crypt::encrypt("+element.task_id+")])}}' >"+element.TaskName+"</a></td>   <td>"+element.deadline+"</td><td>"+element.task_status+"</td><td>"+element.Completion_percent+"%"+"</td>   <td>"+element.name+"</td> <td class='text-right'><div class='dropdown dropdown-action'><a href='#' class='action-icon dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='material-icons'>more_vert</i></a><div class='dropdown-menu dropdown-menu-right'><a class='dropdown-item' href='#' data-toggle='modal' data-target='#edit_leave'><i class='fa fa-pencil m-r-5'></i> Edit</a><a class='dropdown-item' href='#' data-toggle='modal' data-target='#delete_approve' value="+element.task_id+"><i class='fa fa-trash-o m-r-5'></i> Delete</a></div></div></td></tr>");
-                        table.append("<tr><td class='d-none'>"+element.task_id+"</td><td><a onclick='submitTaskDetailsForm("+element.task_id+")' class='task-details' value='"+element.task_id+"' href='#' >"+element.TaskName+"</a></td>   <td>"+element.deadline+"</td><td>"+element.task_status+"</td><td>"+element.Completion_percent+"%"+"</td>   <td>"+element.name+"</td> <td class='text-right'><div class='dropdown dropdown-action'><a href='#' class='action-icon dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='material-icons'>more_vert</i></a><div class='dropdown-menu dropdown-menu-right'><a   class='dropdown-item' onclick='editAjax("+element.task_id+")' type='button' href='#' data-toggle='modal' id='edit-task-btn' data-target='#edit_task' value='"+element.task_id+"' ><i class='fa fa-pencil m-r-5'></i> Edit</a><a class='dropdown-item' href='#' data-toggle='modal' onclick=deleteTaskAjax("+element.task_id+") data-target='#delete_approve'><i class='fa fa-trash-o m-r-5'></i> Delete</a></div></div></td></tr>");
+                        table.append("<tr><td class='d-none'>"+element.task_id+"</td><td><a onclick='submitTaskDetailsForm("+element.task_id+")' class='task-details' value='"+element.task_id+"' href='#' >"+element.TaskName+"</a></td>   <td>"+element.deadline+"</td><td>"+element.task_status+"</td><td>"+element.Completion_percent+"%"+"</td>   <td>"+element.name+"</td> <td class='text-right'><div class='dropdown dropdown-action'><a href='#' class='action-icon dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><i class='material-icons'>more_vert</i></a><div class='dropdown-menu dropdown-menu-right'><a   class='dropdown-item' onclick='editAjax("+element.task_id+")' type='button' href='#' data-toggle='modal' id='edit-task-btn' data-target='#edit_task' value='"+element.task_id+"' ><i class='fa fa-pencil m-r-5'></i> Edit</a></div></div></td></tr>");
                     });
                 }
             });
         });
     });
-</script>
-{{-- for editing task using ajax --}}
-<script>
-    function editAjax(task_id){
-        var url = "{{ route('manager.editTaskAjax', ":id") }}";
-        url = url.replace(':id', task_id);
-        $.ajax({
-            type: "GET",
-            url: url,
-            success: function (response){
-                getTeamMembersonEdit();
-                var response = JSON.parse(response);
-                response.forEach(element => {
-                    $('#edit_task_id').val(task_id);
-            $('#edit_taskname').val(element.TaskName);
-            $('#edit_task_description').val(element.TaskDescription);
-                var d= new Date(element.deadline);
-                var formatted_deadline =d.getDate()+'/'+("0"+(d.getMonth()+1)).slice(-2)+'/'+(d.getFullYear())
-            $('#edit_task_deadline').val(formatted_deadline);
-            $('#edit_completion_Percent').val(element.Completion_percent);
-            $('#hiddenEditAssignedTo').val(element.AssignedTo);
-            $('#hiddenEditPriority').val(element.taskPriority);
-            $('#hiddenEditStatus').val(element.task_status);
-            $('#currentlySelected').text("Currently Assigned to: "+element.name);
-            // * for checking project status
-            if (element.is_completed){
-                    $("#completed").prop("checked", true);
-                    } else {
-                    $("#noCompleted").prop("checked", true);  
-                    }
-            if (element.taskPriority) {
-                $("#edit_task_Priority option[value='"+element.taskPriority+"']").remove();
-                $('#edit_task_Priority').append(`<option selected disabled value="${element.taskPriority}">${element.taskPriority}</option>`);
-                
-                // $("#edit_task_Priority option[value='"+element.taskPriority+"']").prop('selected', true);
-                // $('#edit_task_Priority').val(element.taskPriority).prop('selected', true);
-                // $("#edit_task_Priority option[value='"element.taskPriority"']").prop('selected', selected);
-            }
-            if (element.task_status) {
-                $("#edit_task_status option[value='"+element.task_status+"']").remove();
-                $('#edit_task_status').append(`<option selected disabled value="${element.task_status}">${element.task_status}</option>`);
-               
-            }
-                });                   
-
-
-            }
-        });
-    }
-   
-</script>
-{{-- Task details form submission --}}
-<script>
-    function submitTaskDetailsForm(id){
-        $('#taskDetailsId').val(id);
-        $('#getTaskDetails').submit();
-    }
-</script>
-
-{{-- Ajax for deleting a task --}}
-<script>
-function deleteTaskAjax(task_id){
-    var url = "{{ route('manager.managerDeleteTask', ":id") }}";
-        url = url.replace(':id', task_id);
-        $.ajax({
-                headers: {
-                'X-CSRF-TOKEN': "{{csrf_token()}}",
-                },
-                type: 'POST'
-                , url: url
-                , success: function(response) {
-                    window.location.reload();
-                }
-            });
-}
-</script>
-{{-- Script for getting team members on ajax edit --}}
-<script>
- function getTeamMembersonEdit(){
-    $.ajax({
-                type: 'GET'
-                , url: "{{ route('manager.ajaxTaskAssigned') }}"
-                , success: function(response) {
-                    var response = JSON.parse(response);
-                    $('#edit_assigned_to').empty();
-                    $('#edit_assigned_to').append(`<option value="0" disabled selected>Assign To *</option>`);
-                    response.forEach(element => {
-                        $('#edit_assigned_to').append(`<option value="${element['user_id']}">${element['name']}</option>`);
-                    });
-                }
-            });
- }
 </script>
 @endsection

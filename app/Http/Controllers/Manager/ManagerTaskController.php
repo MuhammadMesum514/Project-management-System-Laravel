@@ -34,7 +34,7 @@ class ManagerTaskController extends Controller
         return view('dashboard.manager.ManagerTasks')->with($data);
     }
 
-    //* Ajax for getting Assigned To
+    // * Ajax for getting Assigned To
     public function getAssignedTo(Request $request){
         if ($request->ajax()){
             $teamMembers = DB::select('select user_id,name from users inner join user_team on users.user_id=user_team.userID where user_team.teamID=?', [Session::get('ManagerTeamID')]);

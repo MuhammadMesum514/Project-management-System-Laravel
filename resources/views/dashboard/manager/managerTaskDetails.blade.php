@@ -294,8 +294,9 @@
 					</div>
 				</div>
 				<!-- /Edit Task Modal -->
-    
-</div>
+			
+				
+			</div>
 
 <!-- /Page Wrapper -->
 @endsection
@@ -399,9 +400,7 @@ function deleteTaskAjax(completion_Flag){
 			$('#task_complete').addClass('task-completed');
 			status = true;
 		}
-	// console.log(status);
 	return status;
-		
 	}
 </script>
 @endsection

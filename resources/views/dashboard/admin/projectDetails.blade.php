@@ -68,8 +68,17 @@
         </div>
         
         <!-- /Page Header -->
-        <input type="hidden" name="hiddenProjectId" id="hiddenProjectId" value="{{$projects[0]->project_id}}">
-        
+
+{{-- Hidden Fields --}}
+<input type="hidden" name="hiddenProjectId" id="hiddenProjectId" value="{{$projects[0]->project_id}}">
+{{-- submit task ID to get task Details  --}}
+<form id="getAdminTaskDetails" method="POST" action="{{ route('admin.admintasksdetails') }}">
+    @csrf
+    <input type="hidden" id="AdmintaskDetailsId" name="task_details_id">
+</form>
+{{-- Hidden Fields --}}
+
+
         <div class="row">
             @foreach ($projects as $project)
             <div class="col-lg-8 col-xl-9">
@@ -77,7 +86,7 @@
                     <div class="card-body">
                         <div class="project-title">
                             <h5 class="card-title">{{$project->ProjectName}}</h5>
-                            <small class="block text-ellipsis m-b-15"><span class="text-xs">2</span> <span class="text-muted">open tasks, </span><span class="text-xs">5</span> <span class="text-muted">tasks completed</span></small>
+                            {{-- <small class="block text-ellipsis m-b-15"><span class="text-xs">2</span> <span class="text-muted">open tasks, </span><span class="text-xs">5</span> <span class="text-muted">tasks completed</span></small> --}}
                         </div>
                         <p>{{$project->ProjectDescription}}</p>
                     </div>
@@ -89,6 +98,9 @@
                         <li class="nav-item"><a class="nav-link" href="#pending_tasks" onclick="getAllTasksOfProject('Pending')" data-toggle="tab" aria-expanded="false">Pending Tasks</a></li>
                         <li class="nav-item"><a class="nav-link" href="#completed_tasks" onclick="getAllTasksOfProject('Done')" data-toggle="tab" aria-expanded="false">Completed Tasks</a></li>
                     </ul>
+
+
+
                     <div class="tab-content">
                         <div class="tab-pane show active" id="all_tasks">
                             <div class="task-wrapper">
@@ -272,11 +284,21 @@
 @section('importScripts')
 @endsection
 @section('script')
+{{-- getting task details on Page load --}}
 <script>
     $(document).ready(function () {
         getAllTasksOfProject('All');
     });
 </script>
+{{-- Admin form submission to get task Details --}}
+<script>
+    function adminSubmitTaskDetailsForm(id){
+        $('#AdmintaskDetailsId').val(id);
+        $('#getAdminTaskDetails').submit();
+    }
+</script>
+
+{{-- method for getting task details --}}
 <script>
     function getAllTasksOfProject(status){
         var url = "{{ route('admin.getAllTasksOfProject', ":id") }}";
@@ -292,10 +314,9 @@
         , success: function(response) {
             $('.allTaskContainer').empty();
             response=JSON.parse(response);
-            console.log(response);
             response.forEach(element => {
                 // $('#allTaskContainer').append('<span class="task-action-btn task-check mr-2"></span><a href="#"><span class="task-label" contenteditable="false">'+element.TaskName+'</span></a><br>')
-                $('.allTaskContainer').append('<div class="task-container"><span class="task-action-btn task-check mr-2"></span><a href="#"><span class="task-label" contenteditable="false">'+element.TaskName+'</span></a></div>');
+                $('.allTaskContainer').append('<div class="task-container"><span class="task-action-btn task-check mr-2"></span><a href="#" onclick= "adminSubmitTaskDetailsForm('+element.task_id+')"" ><span class="task-label" contenteditable="false">'+element.TaskName+'</span></a></div>');
             });
         }                                      
         });

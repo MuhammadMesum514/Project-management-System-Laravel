@@ -55,9 +55,9 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Follow Up Calendar </h3>
+                    <h3 class="page-title">User Dashboard </h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('admin.home')}}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('user.home')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Follow Up Calendar</li>
                     </ul>
                 </div>
@@ -87,11 +87,9 @@
 @endsection
 @section('importScripts')
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
-    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> --}}
 @endsection
 @section('script')
-
 <script type="text/javascript">
   
     $(document).ready(function () {
@@ -120,10 +118,10 @@
         --------------------------------------------
         --------------------------------------------*/
         var calendar = $('#calendar').fullCalendar({
-                        editable: true,
+                        editable: false,
                         events: SITEURL + "/user/home",
                         displayEventTime: false,
-                        editable: true,
+                        editable: false,
                         eventRender: function (event, element, view) {
                             if (event.allDay === 'true') {
                                     event.allDay = true;
@@ -131,84 +129,8 @@
                                     event.allDay = false;
                             }
                         },
-                        selectable: true,
-                        selectHelper: true,
-                        
-                        select: function (start, end, allDay) {
-                            // var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
-                            
-                            // var eventObj=event;
-                            // console.log(start);
-                            var title = prompt('Event Title:');
-                            if (title) {
-                                var start = $.fullCalendar.formatDate(start, "Y-MM-DD");
-                                var end = $.fullCalendar.formatDate(end, "Y-MM-DD");
-                                $.ajax({
-                                    url: SITEURL + "/user/fullcalenderAjax",
-                                    data: {
-                                        title: title,
-                                        start: start,
-                                        end: end,
-                                        type: 'add'
-                                    },
-                                    type: "POST",
-                                    success: function (data) {
-                                        displayMessage("Event Created Successfully");
-      
-                                        calendar.fullCalendar('renderEvent',
-                                            {
-                                                id: data.id,
-                                                title: title,
-                                                start: start,
-                                                end: end,
-                                                allDay: allDay
-                                            },true);
-      
-                                        calendar.fullCalendar('unselect');
-                                    }
-                                });
-                            }
-                        },
-                        eventDrop: function (event, delta) {
-                            var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
-                            var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
-      
-                            $.ajax({
-                                url: SITEURL + '/user/fullcalenderAjax',
-                                data: {
-                                    title: event.title,
-                                    start: start,
-                                    end: end,
-                                    id: event.id,
-                                    type: 'update'
-                                },
-                                type: "POST",
-                                success: function (response) {
-                                    displayMessage("Event Updated Successfully");
-                                }
-                            });
-                        },
-                        eventClick: function (event) {
-                            window.location.href = "{{ route('user.followupform')}}";
-
-                            // var deleteMsg = confirm("Do you really want to delete?");
-                            var deleteMsg = "Do you really want to delete?";
-                            if (deleteMsg) {
-                                $.ajax({
-                                    type: "POST",
-                                    url: SITEURL + '/user/fullcalenderAjax',
-                                    data: {
-                                            id: event.id,
-                                            type: 'delete'
-                                    },
-                                    success: function (response) {
-                                        calendar.fullCalendar('removeEvents', event.id);
-                                        displayMessage("Event Deleted Successfully");
-                                    }
-                                });
-                            }
-                        }
-     
+                        selectable: false,
+                        selectHelper: false,
                     });
      
         });
@@ -222,7 +144,6 @@
             toastr.success(message, 'Event');
         } 
         
-    </script>
+</script>
 {{-- Script for full Calendar --}}
-
 @endsection

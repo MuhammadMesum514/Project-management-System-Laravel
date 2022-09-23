@@ -17,9 +17,9 @@
                     <span>Employees</span>
                 </li>
             
-                <li><a href="{{route('user.followupform')}}">
+                <li><a href="{{route('user.getProjects')}}">
                     <i class="la la-file-word-o"></i>
-                    <span>Follow Up Form</span></a>
+                    <span>My Projects</span></a>
                 </li>   
                
                     </ul>

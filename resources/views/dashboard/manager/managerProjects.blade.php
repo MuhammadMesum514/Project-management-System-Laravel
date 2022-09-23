@@ -79,7 +79,6 @@
 
         <div class="row">
             @foreach ($projects as $project)
-            
             <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
                 <div class="card">
                     <div class="card-body">
@@ -112,15 +111,12 @@
                                 {{$project->End}}
                             </div>
                         </div>
-                       
                     <p class="m-b-5">Progress <span class="text-success float-right">{{$project->progress}}%</span></p>
                     <progress id="file" class="progress progress-xs mb-0 w-100" value="{{$project->progress}}" max="100"> {{$project->progress}}% </progress>
-
                 </div>
             </div>
         </div>
         @endforeach
-
     </div>
 </div>
 <!-- /Page Content -->
