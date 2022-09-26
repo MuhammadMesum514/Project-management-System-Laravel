@@ -16,40 +16,28 @@
 		{{-- <link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap.min.css') }}"> --}}
 		{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> --}}
 		
-		{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> --}}
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 		<!-- Fontawesome CSS -->
-{{-- <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"> --}}
-{{-- <link rel="stylesheet" href="{{ URL::to('assets/css/font-awesome.min.css') }}"> --}}
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+<link rel="stylesheet" href="{{ URL::to('assets/css/font-awesome.min.css') }}">
 <!-- Lineawesome CSS -->
 {{-- <link rel="stylesheet" href="{{ URL::to('assets/css/line-awesome.min.css') }}"> --}}
 <!-- Datatable CSS -->
-{{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css"> --}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
 
 <!--{{-- <link rel="stylesheet" href="{{ URL::to('assets/css/dataTables.bootstrap4.min.css') }}"> --}}-->
 <!-- Select2 CSS -->
-{{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <!--{{-- <link rel="stylesheet" href="{{ URL::to('assets/css/select2.min.css') }}"> --}}-->
 <!-- Datetimepicker CSS -->
 {{-- <link rel="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.0.0/css/bootstrap-datetimepicker.min.css"/> --}}
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script> --}}
-{{-- <link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap-datetimepicker.min.css') }}">  --}}
+<link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap-datetimepicker.min.css') }}"> 
 <!-- Chart CSS -->
-{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.4.2/morris.css" integrity="sha512-1Yp/f4otHy/6yrj/SXnNXr/YINbCaFF9UbA01u2hcAuMED7+ZbGc0YjqqMbP0uDdXcEPgxA9/gtJTYLT0fwScA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.4.2/morris.css" integrity="sha512-1Yp/f4otHy/6yrj/SXnNXr/YINbCaFF9UbA01u2hcAuMED7+ZbGc0YjqqMbP0uDdXcEPgxA9/gtJTYLT0fwScA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {{-- <link rel="stylesheet" href="{{ URL::to('ssets/plugins/morris/morris.css') }}"> --}}
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-			<!-- Fontawesome CSS -->
-<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"> --}}
- <link rel="stylesheet" href="{{ URL::to('assets/css/font-awesome.min.css') }}">
-	@yield('css')
+@yield('css')
 
 <!-- Main CSS -->
 		<link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
@@ -93,10 +81,10 @@
 
 	
 	<!-- jQuery -->
-	{{-- <script
+	<script
   src="https://code.jquery.com/jquery-3.5.1.min.js"
   integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-  crossorigin="anonymous"></script> --}}
+  crossorigin="anonymous"></script>
 	<!-- jQuery -->
 	
 	
@@ -143,13 +131,18 @@
 		  
 	  {{-- 	Lazy load CDN --}}
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js" integrity="sha512-jNDtFf7qgU0eH/+Z42FG4fw3w7DM/9zbgNPe3wfJlCylVDTT3IgKW5r92Vy9IHa6U50vyMz5gRByIu4YIXFtaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+	  {{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> --}}
+	  {{-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> --}}
+	  
+			
+	<!-- Task JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/task.js/0.0.7/task.js" integrity="sha512-bFCVo7cmrzbK9Cg/UJ+noWNW6KcvTBA98E6nxaJRp9Oj+LHdFDp5TRvunaEbu3doRSk3Ft1jHPnJJhlrk8Sr8Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	  <!-- Custom JS -->
 	  <script src="{{ URL::to('assets/js/app.js') }}"></script>
 	  @yield('importScripts');
 	 
 	  {{-- DEFER LOAD Images --}}
-	  {{-- <script type="text/javascript">
+	  <script type="text/javascript">
 		document.addEventListener("DOMContentLoaded", function() {
   var lazyloadImages = document.querySelectorAll("img.lazy");    
   var lazyloadThrottleTimeout;
@@ -179,7 +172,7 @@
   window.addEventListener("resize", lazyload);
   window.addEventListener("orientationChange", lazyload);
 });
-	</script> --}}
+	</script>
 	  @yield('script')
 </body>
 

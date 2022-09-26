@@ -54,9 +54,7 @@
                         <li class="breadcrumb-item active">Projects</li>
                     </ul>
                 </div>
-                <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn add-btn" data-toggle="modal" id="create-new-task" data-target="#create_task"><i class="fa fa-plus"></i> Create New Task</a>
-                </div>
+                
             </div>
         </div>
         <!-- /Page Header -->
@@ -136,7 +134,7 @@
         {{-- Task Count Overview --}}
 
         {{-- submit task ID to get task Details  --}}
-        <form id="getTaskDetails" method="POST" action="{{ url('manager.managertasksdetails') }}">
+        <form id="getTaskDetails" method="POST" action="{{ route('user.userTaskDetails') }}">
             @csrf
             <input type="hidden" id="taskDetailsId" name="task_details_id">
         </form>
@@ -178,48 +176,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="{{route('manager.managerUpdateTask')}}">
+                        <form method="POST" action="{{route('user.userUpdateTask')}}">
                             @csrf
                             <input class="form-control" name="edit_task_id" id='edit_task_id'  type="hidden">
-                            <input class="form-control" name="hiddenEditAssignedTo" id="hiddenEditAssignedTo" type="hidden">
-                            <input class="form-control" name="hiddenEditPriority" id="hiddenEditPriority" type="hidden">
                             <input class="form-control" name="hiddenEditStatus" id="hiddenEditStatus" type="hidden">
-                            
                             <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label>Task Name</label>
-                                        <input class="form-control" id="edit_taskname" name="edit_taskname" type="text" placeholder="Task Name" required>
-                                    </div>
-                                </div>
-    
-    
-                            </div>
-                            <div class="form-group">
-                                <label>Task Description</label>
-                                <textarea rows="4" class="form-control summernote" id="edit_task_description" name="edit_task_description" required placeholder="Enter task Description here"></textarea>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Deadline</label>
-                                        <div class="cal-icon">
-                                            <input class="form-control datetimepicker" id="edit_task_deadline" name="edit_task_deadline" required type="text">
-                                        </div>
-                                    </div>
-                                </div>
-    
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Task Priority</label>
-                                        <select class="form-control select" id="edit_task_Priority" name="edit_task_Priority" required>
-                                            <option value="High">High</option>
-                                            <option value="Normal">Normal</option>
-                                            <option Value="Low">Low</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Task Status</label>
@@ -231,15 +192,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Assigned to<br> <span class="text-danger" id="currentlySelected"></span></label>
-                                        {{-- <label>Assigned to <span class="text-danger">*</span></label> --}}
-                                        <select class="select " id="edit_assigned_to" name="edit_assigned_to" required>
-                                            <option value="" disabled >None</option>
-                                        </select>
-                                    </div>
-                                </div> 
+                           
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Completion Percentage</label>
@@ -287,7 +240,6 @@
                 url: url,
                 data:{'projectId':projectId},
                 success: function (response){
-                    // $('#tasksTable').find('tbody').empty();
                     var response = JSON.parse(response);                   
                     table.empty();
                     response.forEach(element => {
@@ -297,5 +249,48 @@
             });
         });
     });
+</script>
+
+
+{{-- Task details form submission --}}
+<script>
+    function submitTaskDetailsForm(id){
+        $('#taskDetailsId').val(id);
+        $('#getTaskDetails').submit();
+    }
+</script>
+
+{{-- for editing task using ajax --}}
+<script>
+    function editAjax(task_id){
+        var url = "{{ route('user.userEditTaskAjax', ":id") }}";
+        url = url.replace(':id', task_id);
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (response){
+                var response = JSON.parse(response);
+                response.forEach(element => {
+                    $('#edit_task_id').val(task_id);
+                    $('#edit_completion_Percent').val(element.Completion_percent);
+                    $('#hiddenEditStatus').val(element.task_status);
+                    // * for checking project status
+                    if (element.is_completed){
+                            $("#completed").prop("checked", true);
+                            } else {
+                            $("#noCompleted").prop("checked", true);  
+                            }
+                    if (element.task_status) {
+                        $("#edit_task_status option[value='"+element.task_status+"']").remove();
+                        $('#edit_task_status').append(`<option selected disabled value="${element.task_status}">${element.task_status}</option>`);
+                    
+                    }
+                });                   
+
+
+            }
+        });
+    }
+   
 </script>
 @endsection

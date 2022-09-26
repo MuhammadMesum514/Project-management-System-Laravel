@@ -68,7 +68,7 @@
 								<div class="fixed-header">
 									<div class="navbar">
 										<div class="task-assign">
-											<a class="task-complete-btn @php echo $taskDetails[0]->is_completed ? 'task-completed': ''   @endphp" id="task_complete" onclick='deleteTaskAjax(getTaskCompletionFlag()?1:0)' href="javascript:void(0);">
+											<a class="task-complete-btn @php echo $taskDetails[0]->is_completed ? 'task-completed': ''   @endphp" id="task_complete" onclick='markAsComplete(getTaskCompletionFlag()?1:0)' href="javascript:void(0);">
 											{{-- <a class="task-complete-btn" id="task_complete" onclick='deleteTaskAjax()' href="#"> --}}
 												<i class="material-icons">check</i> Mark Complete
 											</a>
@@ -369,7 +369,7 @@
 
 {{-- Ajax for mark as complete --}}
 <script>
-function deleteTaskAjax(completion_Flag){
+function markAsComplete(completion_Flag){
 		// var completion_Flag=getTaskCompletionFlag();
 	var url = "{{ route('manager.markAsComplete', ":id") }}";
         url = url.replace(':id', completion_Flag);

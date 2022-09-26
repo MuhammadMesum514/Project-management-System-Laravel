@@ -14,6 +14,8 @@ use App\Http\Controllers\Manager\ManagerProjectController;
 use App\Http\Controllers\Manager\ManagerTaskController;
 use App\Http\Controllers\User\userDashboardController;
 use App\Http\Controllers\User\userProjectController;
+use App\Http\Controllers\User\userTaskController;
+use App\Http\Controllers\User\UserChatController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,8 +58,20 @@ Route::prefix('user')->name('user.')->group(function(){
           Route::get('/getProjects',[userProjectController::class,'getProjects'])->name('getProjects');
           Route::get('/userprojectdetails/{projectId}',[userProjectController::class,'userProjectDetails'])->name('userProjectDetails');
           
+          
+          //* User Task Details routes
+          Route::any('/userTaskDetails',[userTaskController::class,'index'])->name('userTaskDetails');
+          Route::post('/userTaskDetails/userUpdateTask',[userTaskController::class,'userUpdateTask'])->name('userUpdateTask');
+
+
+
         // * User Ajax routes
         Route::get('/ajaxGetUserTasks/{id}',[userProjectController::class,'ajaxGetUserTasks'])->name('ajaxGetUserTasks');
+        Route::get('/userEditTaskAjax/{id}',[userTaskController::class,'userEditTask'])->name('userEditTaskAjax');
+        Route::POST('/userTaskDetails/usermarkAsComplete/{completion_flag}',[userTaskController::class,'userMarkAsComplete'])->name('userMarkAsComplete');
+        // * user chat ajax 
+        Route::get('/ajaxUserGetChat',[UserChatController::class,'getAllChat'])->name('ajaxUserGetChat');
+        Route::post('/ajaxUserSendMessage',[UserChatController::class,'getAllChat'])->name('ajaxUserSendMessage');
 
           Route::post('/logout',[UserController::class,'logout'])->name('logout');
         //   Route::get('/add-new',[UserController::class,'add'])->name('add');
@@ -115,14 +129,14 @@ Route::prefix('manager')->name('manager.')->group(function(){
        Route::middleware(['auth:manager','PreventBackHistory'])->group(function(){
             Route::get('/home',[ManagerDashboardController::class,'index'])->name('home');
 
-            // manager Projects
+            //* manager Projects
             Route::get('/managerproject',[ManagerProjectController::class,'index'])->name('managerproject');
             Route::get('/editmanagerproject/{id}',[ManagerProjectController::class,'edit'])->name('editmanagerproject');
             Route::post('/addproject',[ManagerProjectController::class,'createProject'])->name('addproject');
             Route::post('/updateproject',[ManagerProjectController::class,'updateProject'])->name('updateproject');
             Route::post('/deleteproject',[ManagerProjectController::class,'deleteProject'])->name('deleteproject');
             
-            // manager Tasks 
+            //* manager Tasks 
             Route::get('/managertasks/{projectId}',[ManagerTaskController::class,'index'])->name('managertasks');
             Route::post('/managertasks/createnewtask',[ManagerTaskController::class,'createTask'])->name('createnewtask');
             Route::post('/managertasks/managerUpdateTask',[ManagerTaskController::class,'updateTask'])->name('managerUpdateTask');
@@ -133,7 +147,7 @@ Route::prefix('manager')->name('manager.')->group(function(){
             
             // Route::post('/managertasks/{projectId}',['as'=>'showProjects','uses'=> 'ManagerTaskController@index'])->name('managertasks');
             
-            // AJAX Routes
+                // * AJAX Routes FOR MANAGER
              Route::get('/ajaxTaskAssigned',[ManagerTaskController::class,'getAssignedTo'])->name('ajaxTaskAssigned');
              Route::get('/ajaxGetTasks/{id}',[ManagerTaskController::class,'getTasks'])->name('ajaxGetTasks');
              Route::get('/editTaskAjax/{id}',[ManagerTaskController::class,'editTasks'])->name('editTaskAjax');
