@@ -154,22 +154,10 @@
 														<div class="task-time">@php echo  date_format(date_create($taskDetails[0]->created_at),"F j, Y g:i a"); @endphp</div>
 													</div>
 													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile.html" class="avatar">
-																<img alt="" src="assets/img/profiles/avatar-02.jpg">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<span class="task-chat-user">John Doe</span> <span class="chat-time">8:35 am</span>
-																	<p>I'm just looking around.</p>
-																	<p>Will you tell me something about yourself? </p>
-																</div>
-															</div>
-														</div>
+														<div class="modfychatbody" id="modfychatbody">
+													</div> 
 													</div>
-													<div class="completed-task-msg"><span class="task-success"><a href="#">John Doe</a> completed this task.</span> <span class="task-time">Today at 9:27am</span></div>
+													{{-- <div class="completed-task-msg"><span class="task-success"><a href="#">John Doe</a> completed this task.</span> <span class="task-time">Today at 9:27am</span></div> --}}
 													
 													
 												</div>
@@ -183,9 +171,9 @@
 											<a class="link attach-icon" href="#"><img src="assets/img/attachment.png" alt=""></a>
 											<div class="message-area">
 												<div class="input-group">
-													<textarea class="form-control" placeholder="Type message..."></textarea>
+													<textarea class="form-control" id="chatMessageBody" required placeholder="Type message..."></textarea>
 													<span class="input-group-append">
-														<button class="btn btn-primary" type="button"><i class="fa fa-send"></i></button>
+														<button class="btn btn-primary" id="submitMessageBtn" onclick="sendMessage()"  disabled="disabled" type="button"><i class="fa fa-send"></i></button>
 													</span>
 												</div>
 											</div>
@@ -303,6 +291,12 @@
 @section('importScripts')
 @endsection
 @section('script')
+{{-- on page load --}}
+<script>
+	$(document).ready(function () {
+		loadChat();
+	});
+</script>
 {{-- for editing task using ajax --}}
 <script>
     function editAjax(task_id){
@@ -403,4 +397,83 @@ function markAsComplete(completion_Flag){
 	return status;
 	}
 </script>
+
+
+{{-- Method to load chat from database --}}
+<script>
+	function loadChat(){
+	var task_id=$('#hiddenTaskDetailId').val();
+	var chatExistFlag = $('#modfychatbody').children().length > 0?1:0;
+		console.log(chatExistFlag);
+	$.ajax({
+	type: "get",
+	url: "{{ route('manager.managerajaxUserGetChat', ":chatExistFlag") }}",
+	data: {'task_id' :task_id,
+			'chatExistFlag':chatExistFlag },
+	success: function (response) {
+		var response = JSON.parse(response);
+		console.log(response);
+		// var chatDiv = $('<div class="chat-avatar"><a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-02.jpg"></a></div><div class="chat-body"><div class="chat-bubble">	<div class="chat-content"><span class="task-chat-user">John Doe</span> <span class="chat-time">8:35 am</span><p>Im just looking around.</p><p>Will you tell me something about yourself? </p>	</div></div></div>');                   
+	if(response){
+	if ( chatExistFlag) {
+		response.forEach(element => {
+			$('#modfychatbody').append('<div class="chat-avatar"><a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-02.jpg"></a></div><div class="chat-body"><div class="chat-bubble">	<div class="chat-content"><span class="task-chat-user">'+element.senderName+'</span> <span class="chat-time">'+element.created_at+'</span><p>'+element.MessageBody+'</p></div></div></div>');
+		});
+	}
+	else{
+		console.log("data not found");
+		$('#modfychatbody').empty();
+		response.forEach(element => {
+			$('#modfychatbody').append('<div class="chat-avatar"><a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-02.jpg"></a></div><div class="chat-body"><div class="chat-bubble">	<div class="chat-content"><span class="task-chat-user">'+element.senderName+'</span> <span class="chat-time">'+element.created_at+'</span><p>'+element.MessageBody+'</p></div></div></div>');
+			// $('#modfychatbody').append('<div class="chat-avatar"><a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-02.jpg"></a></div><div class="chat-body"><div class="chat-bubble">	<div class="chat-content"><span class="task-chat-user">'+element.senderName+'</span> <span class="chat-time">8:35 am</span><p>'+element.MessageBody+'</p></div></div></div>');
+		});
+		// $('#modfychatbody').append('<div class="chat-avatar"><a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-02.jpg"></a></div><div class="chat-body"><div class="chat-bubble">	<div class="chat-content"><span class="task-chat-user">'+element.senderName+'</span> <span class="chat-time">8:35 am</span><p>'+element.MessageBody+'</p></div></div></div>');
+		// $('#modfychatbody').append(chatDiv);
+	}
+	}
+	}
+	});
+	}
+</script>
+
+{{-- for sending a message --}}
+<script>
+	function sendMessage(){
+		var task_id=$('#hiddenTaskDetailId').val();
+		var chatMessageBody=$('#chatMessageBody').val();
+		$.ajax({
+			type: "get",
+			url: "{{ route('manager.managerajaxUserSendMessage') }}",
+			data: {'task_id' :task_id,
+					'chatMessageBody':chatMessageBody},
+			success: function (response) {
+				if (response='Success') {
+					$('#chatMessageBody').val("");
+					loadChat();
+				}
+			}
+		});
+	}
+</script>
+
+
+{{-- Enable send message button only if text exist --}}
+<script type="text/javascript">
+    $(function () {
+        $("#chatMessageBody").keyup(function () {
+            //Reference the Button.
+            var btnSubmit = $("#submitMessageBtn");
+ 
+            //Verify the TextBox value.
+            if ($(this).val().trim() != "") {
+                //Enable the TextBox when TextBox has value.
+                btnSubmit.removeAttr("disabled");
+            } else {
+                //Disable the TextBox when TextBox is empty.
+                btnSubmit.attr("disabled", "disabled");
+            }
+        });
+    });
+</script>
+
 @endsection

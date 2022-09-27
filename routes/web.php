@@ -69,9 +69,10 @@ Route::prefix('user')->name('user.')->group(function(){
         Route::get('/ajaxGetUserTasks/{id}',[userProjectController::class,'ajaxGetUserTasks'])->name('ajaxGetUserTasks');
         Route::get('/userEditTaskAjax/{id}',[userTaskController::class,'userEditTask'])->name('userEditTaskAjax');
         Route::POST('/userTaskDetails/usermarkAsComplete/{completion_flag}',[userTaskController::class,'userMarkAsComplete'])->name('userMarkAsComplete');
-        // * user chat ajax 
+        
+        // * user chat ajax (will be same for manager) 
         Route::get('/ajaxUserGetChat',[UserChatController::class,'getAllChat'])->name('ajaxUserGetChat');
-        Route::post('/ajaxUserSendMessage',[UserChatController::class,'getAllChat'])->name('ajaxUserSendMessage');
+        Route::any('/ajaxUserSendMessage',[UserChatController::class,'userSendMessage'])->name('ajaxUserSendMessage');
 
           Route::post('/logout',[UserController::class,'logout'])->name('logout');
         //   Route::get('/add-new',[UserController::class,'add'])->name('add');
@@ -151,7 +152,12 @@ Route::prefix('manager')->name('manager.')->group(function(){
              Route::get('/ajaxTaskAssigned',[ManagerTaskController::class,'getAssignedTo'])->name('ajaxTaskAssigned');
              Route::get('/ajaxGetTasks/{id}',[ManagerTaskController::class,'getTasks'])->name('ajaxGetTasks');
              Route::get('/editTaskAjax/{id}',[ManagerTaskController::class,'editTasks'])->name('editTaskAjax');
-        
+
+              // * manager chat ajax (will be same for user) 
+        Route::get('/ajaxUserGetChat',[UserChatController::class,'getAllChat'])->name('managerajaxUserGetChat');
+        Route::any('/ajaxUserSendMessage',[UserChatController::class,'userSendMessage'])->name('managerajaxUserSendMessage');
+
+
             Route::post('logout',[ManagerController::class,'logout'])->name('logout');
 
 

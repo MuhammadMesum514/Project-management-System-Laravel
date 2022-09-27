@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Doctor Login</title>
+    <title>Manager Login</title>
     <link rel="stylesheet" href="{{ asset('bootstrap.min.css') }}">
 </head>
 <body>
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4" style="margin-top: 45px">
-                 <h4>Doctor Login</h4><hr>
+                 <h4>Manager Login</h4><hr>
                  <form action="{{ route('manager.check') }}" method="post">
                     @if (Session::get('fail'))
                         <div class="alert alert-danger">

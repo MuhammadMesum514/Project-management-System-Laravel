@@ -19,23 +19,7 @@
                     <i class="la la-user-secret"></i>
                     <span>Projects</span></a>
                 </li>
-
-                <li><a href="{{url('manager.managerbreaktimings')}}">
-                    <i class="la la-hourglass-1"></i>
-                    <span>Break Timings</span></a>
-                </li>
-                <li class="disabled"><a href="{{url('manager.Supervisors-N-Team')}}">
-                    <i class="la la-user-secret" ></i>
-                    <span>Supervisor and Teams</span></a>
-                </li>
-                <li class="disabled"><a href="{{url('manager.notifications')}}">
-                    <i class="la la-bell-o" ></i>
-                    <span>Notifications Management</span></a>
-                </li>
-
-                <li><a href="{{url('manager.employeeSeprations')}}"><i class="la la-external-link-square"></i> <span>Resignation</span></a></li>
-                <li><a href="{{url('manager.file-import-export')}}"><i class="la la-external-link-square"></i> <span>Bulk Uploads</span></a></li>
-            </ul>
+             </ul>
         </div>
     </div>
 </div>
