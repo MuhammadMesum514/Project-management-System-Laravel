@@ -1,3 +1,8 @@
+@php 
+$img=(string)rand(1,30);
+$imgPath="assets/img/profiles/avatar-$img.jpg";
+@endphp
+
 {{-- it will be dashboard page for user --}}
 @extends('layouts.adminBaseLayout.master')
 
@@ -49,7 +54,8 @@
 
     <!-- Page Content -->
     <div class="content container-fluid">
-				
+	
+     
         <!-- Page Header -->
         <div class="page-header">
             <div class="row align-items-center">
@@ -235,7 +241,7 @@
                             <li>
                                     <div class="list-item">
                                         <div class="list-left">
-                                            <span class="avatar"><img alt="" src="assets/img/profiles/avatar-11.jpg"></span>
+                                            <span class="avatar"><img alt="" src="{{url($imgPath)}}"></span>
                                         </div>
                                         <div class="list-body">
                                             <span class="message-author">{{$managerName[0]->managername}}</span>
@@ -255,11 +261,15 @@
                         </h6>
                         <ul class="list-box">
                             @foreach ($TeamMembers as $teamMember)
-                                
+                            @php 
+                            $img=(string)rand(1,30);
+                            $imgPath="assets/img/profiles/avatar-$img.jpg";
+                            @endphp
+                            
                             <li>
                                 <div class="list-item">
                                     <div class="list-left">
-                                        <span class="avatar"><img alt="" src="assets/img/profiles/avatar-02.jpg"></span>
+                                        <span class="avatar"><img alt="" src="{{url($imgPath)}}"></span>
                                     </div>
                                     <div class="list-body">
                                         <span class="message-author">{{$teamMember->username}}</span>

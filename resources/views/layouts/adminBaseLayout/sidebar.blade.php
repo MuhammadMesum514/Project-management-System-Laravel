@@ -12,7 +12,7 @@
                         <span> Dashboard</span> <span class="menu-arrow"></span>
                     </a>
                     <ul style="display: none;">
-                        <li><a class="active" href="{{url('admin.home')}}">Admin Dashboard</a></li>
+                        <li><a class="active" href="{{route('admin.home')}}">Admin Dashboard</a></li>
                     </ul>
                 </li>
                 

@@ -54,10 +54,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">FullCalender </h3>
+                    <h3 class="page-title">Calender </h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Break Timings</li>
+                        <li class="breadcrumb-item active">Home</li>
                     </ul>
                 </div>
             </div>

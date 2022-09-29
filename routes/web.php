@@ -28,7 +28,9 @@ use App\Http\Controllers\User\UserChatController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect()->route('user.home');
+
 });
 
 Auth::routes();
@@ -48,6 +50,10 @@ Route::prefix('user')->name('user.')->group(function(){
           Route::view('/register','dashboard.user.register')->name('register');
           Route::post('/create',[UserController::class,'create'])->name('create');
           Route::post('/check',[UserController::class,'check'])->name('check');
+          Route::fallback(function () {
+            Route::view('/login','dashboard.manager.login')->name('login');
+            });
+   
     });
 
     Route::middleware(['auth:web','PreventBackHistory'])->group(function(){
@@ -73,20 +79,28 @@ Route::prefix('user')->name('user.')->group(function(){
         // * user chat ajax (will be same for manager) 
         Route::get('/ajaxUserGetChat',[UserChatController::class,'getAllChat'])->name('ajaxUserGetChat');
         Route::any('/ajaxUserSendMessage',[UserChatController::class,'userSendMessage'])->name('ajaxUserSendMessage');
-
-          Route::post('/logout',[UserController::class,'logout'])->name('logout');
+        
+        Route::post('/logout',[UserController::class,'logout'])->name('logout');
         //   Route::get('/add-new',[UserController::class,'add'])->name('add');
+        
+        Route::fallback(function() {
+            return redirect()->route('user.home');
+        });
     });
-
+    
 });
 
 Route::prefix('admin')->name('admin.')->group(function(){
-       
+    
     Route::middleware(['guest:admin','PreventBackHistory'])->group(function(){
-          Route::view('/login','dashboard.admin.login')->name('login');
-          Route::post('/check',[AdminController::class,'check'])->name('check');
-    });
+        Route::view('/login','dashboard.admin.login')->name('login');
+        Route::post('/check',[AdminController::class,'check'])->name('check');
+        Route::fallback(function () {
+            Route::view('/login','dashboard.manager.login')->name('login');
+            });
 
+    });
+    
     Route::middleware(['auth:admin','PreventBackHistory'])->group(function(){
         // Route::view('/home','dashboard.admin.dashboard')->name('home');
         Route::get('/home',[AdminDashboardController::class,'index'])->name('home');
@@ -103,12 +117,19 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/project/{teamId}/details/{projectId}',[AdminProjectController::class,'projectDetails'])->name('projectDetails');
         
         Route::any('/admintasksdetails',[AdminTaskController::class,'getAdminTaskDetails'])->name('admintasksdetails');
-
+        
         // Admin AJAX Routes
         Route::get('/ajaxTeamLead',[AdminTeamsController::class,'teams'])->name('ajaxTeamLead');
         Route::get('/ajaxTeamMembers',[AdminTeamsController::class,'getTeamMembers'])->name('ajaxTeamMembers');
         Route::get('/getAllTasksOfProject/{status}',[AdminTeamsController::class,'getAllTasksOfProject'])->name('getAllTasksOfProject');
+
+        // * Ajax chat for admin
+        Route::get('/adminajaxUserGetChat',[UserChatController::class,'getAllChat'])->name('adminajaxUserGetChat');
         
+
+        Route::fallback(function() {
+            return redirect()->route('admin.home');
+        });
     });
 
 });

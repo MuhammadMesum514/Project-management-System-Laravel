@@ -1,9 +1,13 @@
+@php $img=(string)rand(1,30);
+$imgPath="assets/img/profiles/avatar-$img.jpg";
+@endphp
+		
 		<!-- Header -->
 		{{-- @yield('nav') --}}
 		<div class="header">
 			<!-- Logo -->
 			<div class="header-left">
-				<a href="{{ route('manager.home') }}" class="logo"> <img src="{{ URL::to('assets/img/logo.png') }}"
+				<a href="{{ route('manager.home') }}" class="logo"> <img src="{{url('/assets/img/logo.png')}}"
 						width="40" height="40" alt=""> </a>
 			</div>
 			<!-- /Logo -->
@@ -21,10 +25,10 @@
 
 				<li class="nav-item dropdown has-arrow main-drop">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-						{{-- <span class="user-img">
-							<img src="{{ URL::to('/assets/images/'. Auth::user()->filepath)}}"
+						<span class="user-img">
+							<img src="{{url($imgPath)}}"
 								alt="{{ Auth::user()->name }}">
-							<span class="status online"></span></span> --}}
+							<span class="status online"></span></span>
 						<span>{{ Auth::user()->name }}</span>
 					</a>
 					<div class="dropdown-menu">

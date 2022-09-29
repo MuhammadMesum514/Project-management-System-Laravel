@@ -1,3 +1,5 @@
+
+
 {{-- it will be dashboard page for user --}}
 @extends('layouts.managerBaseLayout.master')
 
@@ -38,6 +40,10 @@
         </ul>
     </div>
     @endif
+
+
+    {{-- Random method --}}
+
        <!-- Page Content -->
        <div class="content container-fluid">
 				
@@ -47,7 +53,7 @@
                 <div class="col">
                     <h3 class="page-title">Team</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                         <li class="breadcrumb-item active">MyTeam</li>
                     </ul>
                 </div>
@@ -63,11 +69,15 @@
         @if($teamMembers)
             
             @foreach ($teamMembers as $member)
+                @php $img=(string)rand(1,30);
+                $imgPath="assets/img/profiles/avatar-$img.jpg";
+                @endphp
                 
             <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                 <div class="profile-widget">
                     <div class="profile-img">
-                        <a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-19.jpg"></a>
+                        <a href="#" class="avatar"><img alt="team Member" src="{{url($imgPath)}}"></a>
+                        {{-- <a href="#" class="avatar"><img alt="team Member" data-src="/assets/img/profiles/avatar-{{$img}}.jpg"></a> --}}
                     </div>
                    
                     <h4 class="user-name m-t-10 mb-0 text-ellipsis">{{$member->name}}</h4>

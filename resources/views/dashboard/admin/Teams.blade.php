@@ -1,3 +1,4 @@
+
 {{-- it will be dashboard page for user --}}
 @extends('layouts.adminBaseLayout.master')
 
@@ -63,11 +64,13 @@
 					<!-- /Page Header -->
 					<div class="row staff-grid-row">
 						@foreach ($teams as $team)
-							
+						@php $img=(string)rand(1,30);
+						$imgPath="assets/img/profiles/avatar-$img.jpg";
+						@endphp
 						<div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
 							<div class="profile-widget">
 								<div class="profile-img">
-									<a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-19.jpg"></a>
+									<a href="#" class="avatar"><img alt="" src="{{url($imgPath)}}"></a>
 								</div>
 								<div class="dropdown profile-action">
 									<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>

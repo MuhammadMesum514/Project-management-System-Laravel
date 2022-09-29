@@ -1,4 +1,9 @@
+@php $img=(string)rand(1,30);
+$imgPath="assets/img/profiles/avatar-$img.jpg";
+@endphp
+
 {{-- it will be dashboard page for user --}}
+
 @extends('layouts.adminBaseLayout.master')
 
 @section('css')
@@ -101,7 +106,7 @@
 														<div class="assignee-info">
 															<a href="#">
 																<div class="avatar">
-																	<img alt="" src="assets/img/profiles/avatar-02.jpg">
+																	<img alt="" src="{{url($imgPath)}}">
 																</div>
 																<div class="assigned-info">
 																	<div class="task-head-title">Assigned To</div>
@@ -160,22 +165,10 @@
 														<div class="task-time">@php echo  date_format(date_create($taskDetails[0]->created_at),"F j, Y g:i a"); @endphp</div>
 													</div>
 													<div class="chat chat-left">
-														<div class="chat-avatar">
-															<a href="profile.html" class="avatar">
-																<img alt="" src="assets/img/profiles/avatar-02.jpg">
-															</a>
-														</div>
-														<div class="chat-body">
-															<div class="chat-bubble">
-																<div class="chat-content">
-																	<span class="task-chat-user">John Doe</span> <span class="chat-time">8:35 am</span>
-																	<p>I'm just looking around.</p>
-																	<p>Will you tell me something about yourself? </p>
-																</div>
-															</div>
-														</div>
+														<div class="modfychatbody" id="modfychatbody">
+													</div> 
 													</div>
-													<div class="completed-task-msg"><span class="task-success"><a href="#">John Doe</a> completed this task.</span> <span class="task-time">Today at 9:27am</span></div>
+													{{-- <div class="completed-task-msg"><span class="task-success"><a href="#">John Doe</a> completed this task.</span> <span class="task-time">Today at 9:27am</span></div> --}}
 													
 													
 												</div>
@@ -214,5 +207,47 @@
 @section('importScripts')
 @endsection
 @section('script')
+{{-- Method to load chat from database --}}
+<script>
+	function loadChat(){
+	var task_id=$('#hiddenTaskDetailId').val();
+	var chatExistFlag = $('#modfychatbody').children().length > 0?1:0;
+		console.log(chatExistFlag);
+	$.ajax({
+	type: "get",
+	url: "{{ route('admin.adminajaxUserGetChat', ":chatExistFlag") }}",
+	data: {'task_id' :task_id,
+			'chatExistFlag':chatExistFlag },
+	success: function (response) {
+		var response = JSON.parse(response);
+		console.log(response);
+		// var chatDiv = $('<div class="chat-avatar"><a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-2.jpg"></a></div><div class="chat-body"><div class="chat-bubble">	<div class="chat-content"><span class="task-chat-user">John Doe</span> <span class="chat-time">8:35 am</span><p>Im just looking around.</p><p>Will you tell me something about yourself? </p>	</div></div></div>');                   
+	if(response){
+	if ( chatExistFlag) {
+		response.forEach(element => {
+			$('#modfychatbody').append('<div class="chat-avatar"><a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-2.jpg"></a></div><div class="chat-body"><div class="chat-bubble">	<div class="chat-content"><span class="task-chat-user">'+element.senderName+'</span> <span class="chat-time">'+element.created_at+'</span><p>'+element.MessageBody+'</p></div></div></div>');
+		});
+	}
+	else{
+		console.log("data not found");
+		$('#modfychatbody').empty();
+		response.forEach(element => {
+			$('#modfychatbody').append('<div class="chat-avatar"><a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-2.jpg"></a></div><div class="chat-body"><div class="chat-bubble">	<div class="chat-content"><span class="task-chat-user">'+element.senderName+'</span> <span class="chat-time">'+element.created_at+'</span><p>'+element.MessageBody+'</p></div></div></div>');
+			// $('#modfychatbody').append('<div class="chat-avatar"><a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-2.jpg"></a></div><div class="chat-body"><div class="chat-bubble">	<div class="chat-content"><span class="task-chat-user">'+element.senderName+'</span> <span class="chat-time">8:35 am</span><p>'+element.MessageBody+'</p></div></div></div>');
+		});
+		// $('#modfychatbody').append('<div class="chat-avatar"><a href="#" class="avatar"><img alt="" src="assets/img/profiles/avatar-2.jpg"></a></div><div class="chat-body"><div class="chat-bubble">	<div class="chat-content"><span class="task-chat-user">'+element.senderName+'</span> <span class="chat-time">8:35 am</span><p>'+element.MessageBody+'</p></div></div></div>');
+		// $('#modfychatbody').append(chatDiv);
+	}
+	}
+	}
+	});
+	}
+</script>
 
+{{-- on page load --}}
+<script>
+	$(document).ready(function () {
+		loadChat();
+	});
+</script>
 @endsection

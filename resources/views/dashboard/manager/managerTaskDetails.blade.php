@@ -1,3 +1,7 @@
+@php $img=(string)rand(1,30);
+$imgPath="assets/img/profiles/avatar-$img.jpg";
+@endphp
+
 {{-- it will be dashboard page for user --}}
 @extends('layouts.managerBaseLayout.master')
 
@@ -95,7 +99,7 @@
 														<div class="assignee-info">
 															<a href="#">
 																<div class="avatar">
-																	<img alt="" src="assets/img/profiles/avatar-02.jpg">
+																	<img alt="" src="{{url($imgPath)}}">
 																</div>
 																<div class="assigned-info">
 																	<div class="task-head-title">Assigned To</div>
